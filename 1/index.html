@@ -16,20 +16,29 @@
 <body>
     <h1>Project 1</h1>
     <p>Colorizing the Prokudin-Gorskii Photo Collection</p>
-    <p>Explain what I did.</p>
-    <h2>Images</h2>
+    <p>In order to align these red, green, and blue channels, I implemented both a naive (exhaustive search) to find the displacement vector between 
+        one channel and another and a pyramid alignment structure. The naive search aims to find the optimal displacement between one channel and 
+        another against a certain metric. In other words, it minimizes loss for the different possible displacement vectors over a certain window, 
+        which I chose to be [-15, 15] in both the x and y direction. The options for the loss function were the euclidian distance between the 
+        pixel values (L2 norm) and the negative of the normalized cross correlation, which is the normalized dot product between the image vectors. 
+        Note that normally we would want to maximize the NCC, but under the hood, I minimized the negative NCC to treat it as a loss function (made
+        code cleaner too). Here are images that are suitable for the naive implementation. </p>
     <img src="media/cathedral.jpeg" alt="cathedral">
+    <img src="media/monastery.jpeg" alt="monastery">
+    <img src="media/tobolsk.jpeg" alt="tobolsk">
+    <p> This naive search implementation works fine on lower resolution images, but runtime becomes an issue for higher resolution images. Thus, a 
+    an pyramid approach. Under the hood, I implemented this both iteratively and recursively, with starting by downsampling an image by a factor of 2 until it reached a certain small size. 
+    
+    </p>
     <img src="media/church.jpeg" alt="church">
     <img src="media/harvesters.jpeg" alt="harvesters">
     <img src="media/icon.jpeg" alt="icon">
     <img src="media/lady.jpeg" alt="lady">
     <img src="media/melons.jpeg" alt="melons">
-    <img src="media/monastery.jpeg" alt="monastery">
     <img src="media/onion_church.jpeg" alt="onion_church">
     <img src="media/sculpture.jpeg" alt="sculpture">
     <img src="media/self_portrait.jpeg" alt="self_portrait">
     <img src="media/three_generations.jpeg" alt="three_generations">
-    <img src="media/tobolsk.jpeg" alt="tobolsk">
     <img src="media/train.jpeg" alt="train">
     
     <img src="media/emir.jpeg" alt="emir">
