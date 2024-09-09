@@ -19,8 +19,7 @@
     <p>Cool History: Before color photography even existed Prokudin-Gorskii, took photgraphs across Russia with red, green, and blue filters, 
         hoping one day to use a special projector to project these photographs in color. Unfortunately, he did not live to see this collection fully reconstructed  
     as we can today. In this project, I use the the digitized glass plate negatives from the library of congress. The task is to align the three negatives, 
-    each taken with different filters (red, green, and blue) to colorize the images. Colorizing this collection is like bringing life to history (too cheesy). 
-    While Prokudin-Gorskii did not see his colorized collection, we now can. </p>
+    each taken with different filters (red, green, and blue) to colorize the images. Fulfilling Prokudin-Gorskii's objective by colorizing this collection feels like bringing life to history! </p>
      <p>In order to align these red, green, and blue channels, I first implemented a naive, exhaustive search to find the displacement vector between 
         one filter/channel and another. The naive search aims to find the optimal displacement between one channel and another against a certain metric. 
          In other words, it minimizes loss for the different possible displacement vectors over a certain window, 
@@ -30,8 +29,12 @@
         code cleaner too). I aligned the red filter to the blue and the green 
     filter to the blue and stacked them on top of each other, resulting in the following images. </p>
     <img src="media/cathedral.jpeg" alt="cathedral">
+    </p>Green displacement: [2 5] Red displacement: [ 3 12]</p>
     <img src="media/monastery.jpeg" alt="monastery">
+    </p>Green displacement: [ 2 -3] Red displacement: [2 3]</p>
     <img src="media/tobolsk.jpeg" alt="tobolsk">
+    </p>Green displacement: [3 3] Red displacement: [3 6]</p>
+    
     <p> This naive search implementation works fine on lower resolution images, but runtime becomes an issue for higher resolution images. Thus, a 
     an pyramid approach was taken. I first implemented this iteratively, downsampling the image by a factor of 2 until it reached a small enough, 
     somewhat arbitrary size that worked well (no greater than 200 pixels wide). I saved each intermediate resolution. Starting at the coarsest 
@@ -48,29 +51,51 @@
     </p>
     
     <img src="media/church.jpeg" alt="church">
-    </p>Green displacement: [13 52] Red displacement: [ 11 111]</p>
+    </p>Green displacement: [ 4 25] Red displacement: [-4 58]</p>
+    
     <img src="media/harvesters.jpeg" alt="harvesters">
+    </p>Green displacement: [17 59] Red displacement: [ 13 123]</p>
+    
     <img src="media/icon.jpeg" alt="icon">
+    </p>Green displacement: [17 41] Red displacement: [23 89]</p>
+    
     <img src="media/lady.jpeg" alt="lady">
+    </p>Green displacement: [ 8 52] Red displacement: [ 11 113]</p>
+    
     <img src="media/melons.jpeg" alt="melons">
+    </p>Green displacement: [10 81] Red displacement: [ 13 178]</p>
+    
     <img src="media/onion_church.jpeg" alt="onion_church">
+    </p>Green displacement: [27 51] Red displacement: [ 36 108]</p>
+    
     <img src="media/sculpture.jpeg" alt="sculpture">
+    </p>Green displacement: [-11  33] Red displacement: [-27 140]</p>
+    
     <img src="media/self_portrait.jpeg" alt="self_portrait">
+    </p>Green displacement: [29 78] Red displacement: [ 37 176]</p>
+    
     <img src="media/three_generations.jpeg" alt="three_generations">
+    </p>GGreen displacement: [13 52] Red displacement: [ 11 111]</p>
+    
     <img src="media/train.jpeg" alt="train">
+    </p>Green displacement: [ 6 42] Red displacement: [32 87]</p>
     
     <img src="media/emir.jpeg" alt="emir">
+    </p>Green displacement: [24 49] Red displacement: [-241   33]</p>
+    
     <p>As you can see from the Emir image above the red channel isn't quite aligned, resulting in a weird ghost-like double image. I tried a different
         metric, (bells and whistles suggestion) Structural Similarity Index, which takes into account the inter-dependency of pixels. However, this didn't
-        help much. :(
+        help much.
         
-        As explained above the general procedure was to align the red and green channels to the blue one. However, in this case, the jacket, which 
+    As explained above the general procedure was to align the red and green channels to the blue one. However, in this case, the jacket, which 
     is a bright blue color, takes up a lot of pixels. Based on this color, the blue filter in this area will have a relatively high value (aporoaching 1)
     in comparison to the red and green (about 0). This will affect the metrics in a weird way. For example, for NCC, the correlation would be low, even though 
     it is technichally the same area. To remedy this, instead of algining the red and green filters to the blue one, I tried aligning the 
     blue and red to the green. Looks a lot better now! 
     </p>
+    
     <img src="media/emir_fixed.jpeg" alt="emir_fixed">
+    </p>Red displacement: [17 57] Blue displacement: [-24 -49]</p>
  
 </body>
 </html>
