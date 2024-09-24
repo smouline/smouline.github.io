@@ -18,7 +18,6 @@
 </head>
 <body>
     <h1>Fun with Filters and Frequencies</h1>
-    <img src="grad_mad.png" alt="Gradient Magnitude Image">
     <p> In this project, I got to play with images in the frequency realm. Using certain techniques I will detail below, 
         I got to see the different frequencies (low and high) of images and combine them in a way to either sharpen, 
         hybridize, or blend images together! </p>
@@ -86,6 +85,9 @@
         better. The sharpened version's edges are not much different anyway, and the sharpening took away a lot of warmth. This is most likely
         because the animals are in the shade, so in trying to make the edges there more prominent, it exaggerated cooler tones. 
     </p>
+    <img src="barometer" alt="Barometer">
+    <p> The sharpening here really helped in the legibility of the text!
+    </p>
     <img src="castle.png" alt="Castle">
     <p> This is an example of first blurring an image with a gaussian filter and then sharpening that image. Although it is subtle,
         the sharpened and original image look more like each other than the blurred, center image. 
@@ -102,11 +104,9 @@
      <img src="derek.png" alt="Derek">
      <img src="nutmeg.png" alt="Cat">
     <img src="cat_man.png" alt="Cat man">
-    <img src="best_prof.png" alt="Prof Efros">
-    <img src="oski.png" alt="Oski">
     <p> The following was somewhat a fail :(. Who knew aligning Professor Efros and Oski would prove to be a challenge?  </p>
-    <img src="best_prof.png" alt="Prof Efros">
-    <img src="oski.png" alt="Oski">
+    <img src="best_prof.jpeg" alt="Prof Efros">
+    <img src="oski.jpg" alt="Oski">
     <img src="prof_oski.png" alt="Prof Oski">
 <p> We learned that many mathematicians, especially Lagrange, were skeptical of Fourier's claim that any function can be decomposed into sine and cosine waves. 
     Lagrange outright rejected the idea. I thought it would be ironic to create a hybrid image of these two great mathematicians, 
@@ -130,8 +130,8 @@ Gaussian stack is created by successively convolving an image with a Gaussian fi
         <code>blend_k = im_1_k * mask_k + (1 - mask_k) * im_2_k</code>. 
         This process is repeated for each color channel, resulting in the blended levels and the final output.</p>
     
-    <img src="apple.png" alt="Fourier">
-    <img src="organge" alt="Lagrange">
+    <img src="apple.jpeg" alt="Apple">
+    <img src="orange.jpeg" alt="Orange">
     <img src="oraple.png" alt="Multiresolution Blending Result">
     <img src="oraple_final.png" alt="Multiresolution Blending Result">
     <p>
@@ -140,8 +140,8 @@ Gaussian stack is created by successively convolving an image with a Gaussian fi
         Note that this uses an irregular mask, which was easily obtained since the background of the characters
         is white. 
     </p>
-    <img src="apple.png" alt="Fourier">
-    <img src="organge" alt="Lagrange">
+    <img src="monsters.jpeg" alt="Monsters">
+    <img src="sather_gate" alt="Sather Gate">
     <img src="monsters_u.png" alt="Multiresolution Blending Result">
     <img src="monsters_u_final.png" alt="Multiresolution Blending Result">
 
@@ -152,8 +152,8 @@ Gaussian stack is created by successively convolving an image with a Gaussian fi
         the guassian kernels, but that's somewhat inevitable since the colors are so different between the two images. 
     </p>
 
-    <img src="apple.png" alt="Fourier">
-    <img src="organge" alt="Lagrange">
+    <img src="tree.jpg" alt="Fourier">
+    <img src="trees_fall.jpeg" alt="Lagrange">
     <img src="fall.png" alt="Multiresolution Blending Result">
     <img src="fall_final.png" alt="Multiresolution Blending Result">
 
@@ -162,7 +162,7 @@ Gaussian stack is created by successively convolving an image with a Gaussian fi
         it would look like. Note that I used Photopea to obtain the irregular mask here. 
     </p>
     
-    <img src="apple.png" alt="Fourier">
+    <img src="milk.jpeg" alt="Fourier">
     <img src="organge" alt="Lagrange">
     <img src="city_way.png" alt="Multiresolution Blending Result">
     <img src="city_way_final.png" alt="Multiresolution Blending Result">
