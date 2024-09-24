@@ -18,53 +18,168 @@
 </head>
 <body>
     <h1>Fun with Filters and Frequencies</h1>
+    <img src="grad_mad.png" alt="Gradient Magnitude Image">
     <p> In this project, I got to play with images in the frequency realm. Using certain techniques I will detail below, 
         I got to see the different frequencies (low and high) of images and combine them in a way to either sharpen, 
-        hybridize, or blend images together! g</p>
+        hybridize, or blend images together! </p>
     <h2>Part 1: Fun with Filters</h2>
     
     <!-- Part 1.1 -->
     <h3>Part 1.1: Finite Difference Operator</h3>
-    <p>Here is the partial x and y of this image. </p>
+    <img src="cameraman.png" alt="Cameraman">
+    <p>Here are the partial x and y derivatives of this image. This was computed by convolving the finite 
+        difference operators, Dx = [[-1, 1]] and Dy = [[1], [-1]] with the image. Partial x and partial y repectively show changes in brightness 
+        when moving across the image horizontally and changes in brightness when moving across the image vertically. This 
+        essentially means that partial x and partial y detect vertical and horizontal edges, respectively. </p>
     <img src="partials.png" alt="Cameraman Partial Derivative in x">
+     <p> Now that we have the partials, we have the componenets of the gradient vector. Taking the magnitude is simple! Like 
+         any other vector, it is the squareroot of the sum of squares of the components. Here is the result: </p>
     <img src="grad_mad.png" alt="Gradient Magnitude Image">
-    <img src="media/binarize_grad" alt="Edge Image">
+    <p> We can binarize this image at different thresholds to create an edge image. You can see from the following that 
+    the threshold needs to be qualitatively tuned. On the far left, it's too low, capturing too much noise as signal. On 
+    the far right, we're missing some important edges. However, the middle threshold was about the best I 
+        could get it--it is the golilocks in this case. 
+    <img src="binarize_grad.png" alt="Edge Image">
+    <p> Hmmm but there's still some noise...what else can we do? </p>
 
     <!-- Part 1.2 -->
     <h3>Part 1.2: Derivative of Gaussian (DoG) Filter</h3>
-    <p>Placeholder description of Part 1.2 tasks.</p>
-    <img src="smooth_grad_1.png" alt= "Blurred Image with Gaussian">
-    <img src="DOG_partials.png" alt="DoG Filter in x">
-    <img src="smooth_grad_2.png" alt="DoG Filter in y">
+    <p> If we smooth the image before finding the gradient, we should be able to minimize noise. To achieve the smoothing, 
+        I used a handy 2D guassian filter (taken by taking the outer product of a 1D guassian with its transpose. After smoothing
+        the image, I repeated the procedure from 1.1: partials with two separate convolutions -> gradients of magnitude -> binarize. 
+    </p>
+    <img src="smooth_grad_1.png" alt= "Gaussian DoG">
+    <p> What do you see? I see that after the Guassian filter was applied, the image is a lot more smooth. 
+        Now even at a very low threshold relative to part 1.1, there are no weird noise lines on the bottom going horizontally. But wait, 
+        what if I feel like doing this in a different order? Well, connvolution (unlike 
+        cross-correlation) is really neat in that it has communative and associative mathematical properties. With its associative 
+        property, we can actually first create derivative of gaussian filters (DoG) for x and y and then convolve those with the image. Then, rinse and repeat 
+        the rest of the steps: magnitude, binarize... 
+    </p>
+    <img src="DOG_partials.png" alt="DoG Filters">
+  <p> Above are the filters that were produced from convolving the finite different operators with the 2D gaussian kernel and finally the 
+      results of this process:
+    </p>    
+    <img src="smooth_grad_2.png" alt="DoG Results">
+    <p> As you can see, we can pretty much confirm that these two methods are equivalent! Yay to mathematical properties. 
+    </p> 
 
     <h2>Part 2: Fun with Frequencies</h2>
 
     <!-- Part 2.1 -->
     <h3>Part 2.1: Image "Sharpening"</h3>
-    <p>Placeholder description of Part 2.1 tasks.</p>
-    <img src="taj.png" alt="Blurry Image">
-    <img src="animal_reunion.png" alt="Sharpened Image">
-    <img src="castle.png" alt="Original vs Sharpened">
+    <p>Sharpening an image can be achieved by adding more high frequencies into the image. The Gaussian filter can act as a low-pass filter.
+    After smoothing the image from this, we can subtract it from the image to obtain the high frequencies. Then we can add these details into 
+    image by a tunable factor of alpha to sharpen it. But what if we want to streamline this? Well, fear not! Once again, becuase convolution is
+    communative and associative, we can create one filter, called the unsharp mask filter through the following factoring: 
+        f +α( f − f ∗ g) = (1+α) f −α f ∗ g = f ∗((1+α)e −αg). f is the image, g is the gaussian filter, and alpha is the sharpening factor. 
+        e is an impulse (identity) filter-- a filter that when convolved with something does not change it. Thus, it is a filter where the center 
+        is one, surrounded by zeros. I filtered the following images using a unsharp mask filter:
+    </p>
+    <img src="taj.png" alt="Taj">
+    <p> The sharpening is evident! And it gets sharper as alpha increases since this makes high frequencies more prominent. 
+    </p>
+    <img src="animal_reunion.png" alt="Animal Reunion">
+    <p> This is one of my favorite and most random images I've ever taken. I mean, I'd be shocked if someone else has taken an unstaged 
+        photo of a cat, dog, and monkey crossing paths. (Question: can you guess where this is?). Because the animals' furs blend into the 
+        ground quite a bit, I wondered if they would become more apparent with some sharpening. However, in my opinion the original image looks
+        better. The sharpened version's edges are not much different anyway, and the sharpening took away a lot of warmth. This is most likely
+        because the animals are in the shade, so in trying to make the edges there more prominent, it exaggerated cooler tones. 
+    </p>
+    <img src="castle.png" alt="Castle">
+    <p> This is an example of first blurring an image with a gaussian filter and then sharpening that image. Although it is subtle,
+        the sharpened and original image look more like each other than the blurred, center image. 
+    </p>
 
     <!-- Part 2.2 -->
     <h3>Part 2.2: Hybrid Images</h3>
-    <p>Placeholder description of Part 2.2 tasks.</p>
-    <img src="cat_man.png" alt="Hybrid Image Example 1">
-    <img src="prof_oski.png" alt="Hybrid Image Example 2">
+    <p>We can use the fact that we see high frequencies up close and low frequencies at a distance to create hybrid images. This
+    is achieved averaging two filtered images, one with a low-pass filter and the other with a high-pass filter. The image with the low-pass
+    filter will be able to be seen from a distance and the one with the high-pass filter will be able to be seen up close. The sigma and size
+    of the gaussian filter were visually tuned to ensure that the two images can be seen at different distances.
+    I found it generally best to use color on one image, specfically for the high frequency one, so the cat has color here. 
+    </p>
+     <img src="derek.png" alt="Derek">
+     <img src="nutmeg.png" alt="Cat">
+    <img src="cat_man.png" alt="Cat man">
+    <img src="best_prof.png" alt="Prof Efros">
+    <img src="oski.png" alt="Oski">
+    <p> The following was somewhat a fail :(. Who knew aligning Professor Efros and Oski would prove to be a challenge?  </p>
+    <img src="best_prof.png" alt="Prof Efros">
+    <img src="oski.png" alt="Oski">
+    <img src="prof_oski.png" alt="Prof Oski">
+<p> We learned that many mathematicians, especially Lagrange, were skeptical of Fourier's claim that any function can be decomposed into sine and cosine waves. 
+    Lagrange outright rejected the idea. I thought it would be ironic to create a hybrid image of these two great mathematicians, 
+    especially since I will be visualizing the 2D Fourier transform of their images. </p>
+    <img src="Fourier.png" alt="Fourier">
+    <img src="Lagrange.png" alt="Lagrange">
     <img src="mortal_enemies.png" alt="Hybrid Image Example 3">
+    <p> The 2D Fourier tranforms analysis: </p>
     <img src="ffts.png" alt="Fourier Transforms">
 
-    <!-- Part 2.3 -->
-    <h3>Part 2.3 and 3.4: Gaussian and Laplacian Stacks, Multiresolution Blending</h3>
-    <p>Placeholder description of Part 2.4 tasks.</p>
+    <!-- Part 2.3 and 2.4 -->
+    <h3>Part 2.3 and 2.4: Gaussian and Laplacian Stacks, Multiresolution Blending</h3>
+Gaussian stack is created by successively convolving an image with a Gaussian filter, making the image progressively smoother at each level. 
+    A Laplacian stack is formed by taking the difference between consecutive levels of the Gaussian stack, 
+    which isolates details at different frequency bands. The first level of the Laplacian stack captures the highest frequencies 
+    (the finest details), with each subsequent level capturing progressively lower frequencies.</p> 
+    <p>To reconstruct an image from a Laplacian stack, you sum all the frequency bands (levels of the Laplacian stack) and add the lowest frequency, 
+        which corresponds to the final level of the Gaussian stack.</p>
+    <p>For smooth image blending, I used Laplacian stacks for the two images I wanted to blend and a Gaussian stack for the mask. 
+        This method enables blending at multiple resolutions. Blending at level <i>k</i> is achieved with the formula: 
+        <code>blend_k = im_1_k * mask_k + (1 - mask_k) * im_2_k</code>. 
+        This process is repeated for each color channel, resulting in the blended levels and the final output.</p>
+    
+    <img src="apple.png" alt="Fourier">
+    <img src="organge" alt="Lagrange">
     <img src="oraple.png" alt="Multiresolution Blending Result">
     <img src="oraple_final.png" alt="Multiresolution Blending Result">
+    <p>
+        Apparently, Monsters Univerity's campus was inspired by Berkeley's campus (Pixar isn't too far from us!). I 
+        have yet to encounter Mike Wazowski roaming around, but through the following blending, we can imagine it. 
+        Note that this uses an irregular mask, which was easily obtained since the background of the characters
+        is white. 
+    </p>
+    <img src="apple.png" alt="Fourier">
+    <img src="organge" alt="Lagrange">
     <img src="monsters_u.png" alt="Multiresolution Blending Result">
     <img src="monsters_u_final.png" alt="Multiresolution Blending Result">
+
+    <p>
+        It's officially fall now! The leaves are changing colors, and this change is captured through the following blend. I was 
+        able to find two images where the tree trucks are almost aligned. in the bottom left corner. To make it 
+        look like one tree, I used a triangle mask in the left bottom corner. The transition isn't the most smooth even with tuning 
+        the guassian kernels, but that's somewhat inevitable since the colors are so different between the two images. 
+    </p>
+
+    <img src="apple.png" alt="Fourier">
+    <img src="organge" alt="Lagrange">
     <img src="fall.png" alt="Multiresolution Blending Result">
     <img src="fall_final.png" alt="Multiresolution Blending Result">
+
+    <p>
+       One can't even see a singular star in New York, let alone the milky way, but blending can allow us to imagine what
+        it would look like. Note that I used Photopea to obtain the irregular mask here. 
+    </p>
+    
+    <img src="apple.png" alt="Fourier">
+    <img src="organge" alt="Lagrange">
     <img src="city_way.png" alt="Multiresolution Blending Result">
     <img src="city_way_final.png" alt="Multiresolution Blending Result">
+
+    <h3>
+        Conclusion
+    </h3>
+     <p>
+        This was a really cool project! It's one thing to learn about concepts like Laplacian stacks or filters in lecture, 
+         but actually implementing them is a different experience. Coding these functions from the ground up 
+         helped solidify my understanding of how different filters operate, 
+         how frequencies influence an image, and how concepts like smoothing, sharpening, and blending work in practice. 
+         I also enjoyed the creative aspect of the project—thinking of fun and meaningful images to experiment with added a personal touch. 
+         Whether it was sharpening an unusual animal encounter or hybridizing mathematical figures, each part allowed me 
+         to have fun with the images I selected. 
+    </p>
+
 
 </body>
 </html>
