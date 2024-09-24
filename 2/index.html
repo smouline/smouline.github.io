@@ -33,7 +33,7 @@
     <img src="partials.png" alt="Cameraman Partial Derivative in x">
      <p> Now that we have the partials, we have the componenets of the gradient vector. Taking the magnitude is simple! Like 
          any other vector, it is the squareroot of the sum of squares of the components. Here is the result: </p>
-    <img src="grad_mad.png" alt="Gradient Magnitude Image">
+    <img src="grad_mag.png" alt="Gradient Magnitude Image">
     <p> We can binarize this image at different thresholds to create an edge image. You can see from the following that 
     the threshold needs to be qualitatively tuned. On the far left, it's too low, capturing too much noise as signal. On 
     the far right, we're missing some important edges. However, the middle threshold was about the best I 
@@ -44,19 +44,19 @@
     <!-- Part 1.2 -->
     <h3>Part 1.2: Derivative of Gaussian (DoG) Filter</h3>
     <p> If we smooth the image before finding the gradient, we should be able to minimize noise. To achieve the smoothing, 
-        I used a handy 2D guassian filter (taken by taking the outer product of a 1D guassian with its transpose. After smoothing
+        I used a handy 2D guassian filter, by taking the outer product of a 1D guassian with its transpose. After smoothing
         the image, I repeated the procedure from 1.1: partials with two separate convolutions -> gradients of magnitude -> binarize. 
     </p>
     <img src="smooth_grad_1.png" alt= "Gaussian DoG">
-    <p> What do you see? I see that after the Guassian filter was applied, the image is a lot more smooth. 
-        Now even at a very low threshold relative to part 1.1, there are no weird noise lines on the bottom going horizontally. But wait, 
+    <p> What do you see? I see that after the Gaussian filter was applied, the image is a lot more smooth. 
+        Now, even at a very low threshold relative to part 1.1, there are no weird noise lines on the bottom going horizontally. But wait, 
         what if I feel like doing this in a different order? Well, connvolution (unlike 
         cross-correlation) is really neat in that it has communative and associative mathematical properties. With its associative 
         property, we can actually first create derivative of gaussian filters (DoG) for x and y and then convolve those with the image. Then, rinse and repeat 
         the rest of the steps: magnitude, binarize... 
     </p>
     <img src="DOG_partials.png" alt="DoG Filters">
-  <p> Above are the filters that were produced from convolving the finite different operators with the 2D gaussian kernel and finally the 
+  <p> Above are the filters that were produced from convolving the finite different operators with the 2D gaussian kernel, and now finally the 
       results of this process:
     </p>    
     <img src="smooth_grad_2.png" alt="DoG Results">
@@ -68,15 +68,15 @@
     <!-- Part 2.1 -->
     <h3>Part 2.1: Image "Sharpening"</h3>
     <p>Sharpening an image can be achieved by adding more high frequencies into the image. The Gaussian filter can act as a low-pass filter.
-    After smoothing the image from this, we can subtract it from the image to obtain the high frequencies. Then we can add these details into 
-    image by a tunable factor of alpha to sharpen it. But what if we want to streamline this? Well, fear not! Once again, becuase convolution is
+    After smoothing the image from this, we can subtract it from the image to obtain the high frequencies. Then we can add these details by a 
+    factor of alpha into the image to sharpen it. But what if we want to streamline this? Well, fear not! Once again, becuase convolution is
     communative and associative, we can create one filter, called the unsharp mask filter through the following factoring: 
-        f +α( f − f ∗ g) = (1+α) f −α f ∗ g = f ∗((1+α)e −αg). f is the image, g is the gaussian filter, and alpha is the sharpening factor. 
+        f +α( f − f ∗ g) = (1+α) f −α f ∗ g = f ∗((1+α)e −αg), where f is the image, g is the gaussian filter, and alpha is the sharpening factor. 
         e is an impulse (identity) filter-- a filter that when convolved with something does not change it. Thus, it is a filter where the center 
-        is one, surrounded by zeros. I filtered the following images using a unsharp mask filter:
+        is one, surrounded by zeros. I filtered the following images by convolving with the unsharp mask filter, ((1+α)e −αg):
     </p>
     <img src="taj.png" alt="Taj">
-    <p> The sharpening is evident! And it gets sharper as alpha increases since this makes high frequencies more prominent. 
+    <p> The sharpening is evident! It gets sharper as alpha increases since this makes high frequencies more prominent. 
     </p>
     <img src="animal_reunion.png" alt="Animal Reunion">
     <p> This is one of my favorite and most random images I've ever taken. I mean, I'd be shocked if someone else has taken an unstaged 
@@ -85,7 +85,7 @@
         better. The sharpened version's edges are not much different anyway, and the sharpening took away a lot of warmth. This is most likely
         because the animals are in the shade, so in trying to make the edges there more prominent, it exaggerated cooler tones. 
     </p>
-    <img src="barometer" alt="Barometer">
+    <img src="barometer.png" alt="Barometer">
     <p> The sharpening here really helped in the legibility of the text!
     </p>
     <img src="castle.png" alt="Castle">
@@ -96,7 +96,7 @@
     <!-- Part 2.2 -->
     <h3>Part 2.2: Hybrid Images</h3>
     <p>We can use the fact that we see high frequencies up close and low frequencies at a distance to create hybrid images. This
-    is achieved averaging two filtered images, one with a low-pass filter and the other with a high-pass filter. The image with the low-pass
+    is achieved through averaging two filtered images, one with a low-pass filter and the other with a high-pass filter. The image with the low-pass
     filter will be able to be seen from a distance and the one with the high-pass filter will be able to be seen up close. The sigma and size
     of the gaussian filter were visually tuned to ensure that the two images can be seen at different distances.
     I found it generally best to use color on one image, specfically for the high frequency one, so the cat has color here. 
@@ -119,16 +119,18 @@
 
     <!-- Part 2.3 and 2.4 -->
     <h3>Part 2.3 and 2.4: Gaussian and Laplacian Stacks, Multiresolution Blending</h3>
-Gaussian stack is created by successively convolving an image with a Gaussian filter, making the image progressively smoother at each level. 
+    <p> A Gaussian stack is created by successively convolving an image with a Gaussian filter, making the image progressively smoother at each level. 
     A Laplacian stack is formed by taking the difference between consecutive levels of the Gaussian stack, 
     which isolates details at different frequency bands. The first level of the Laplacian stack captures the highest frequencies 
-    (the finest details), with each subsequent level capturing progressively lower frequencies.</p> 
-    <p>To reconstruct an image from a Laplacian stack, you sum all the frequency bands (levels of the Laplacian stack) and add the lowest frequency, 
-        which corresponds to the final level of the Gaussian stack.</p>
+    (the finest details), with each subsequent level capturing progressively lower frequencies. To reconstruct an image from a Laplacian stack, 
+        you sum all the frequency bands (levels of the Laplacian stack) and add the lowest frequency, 
+        which corresponds to the final level of the Gaussian stack.
+    </p>
     <p>For smooth image blending, I used Laplacian stacks for the two images I wanted to blend and a Gaussian stack for the mask. 
         This method enables blending at multiple resolutions. Blending at level <i>k</i> is achieved with the formula: 
         <code>blend_k = im_1_k * mask_k + (1 - mask_k) * im_2_k</code>. 
-        This process is repeated for each color channel, resulting in the blended levels and the final output.</p>
+        This process is repeated for each color channel, resulting in the blended levels and the final output.
+    </p>
     
     <img src="apple.jpeg" alt="Apple">
     <img src="orange.jpeg" alt="Orange">
@@ -152,8 +154,8 @@ Gaussian stack is created by successively convolving an image with a Gaussian fi
         the guassian kernels, but that's somewhat inevitable since the colors are so different between the two images. 
     </p>
 
-    <img src="tree.jpg" alt="Fourier">
-    <img src="trees_fall.jpeg" alt="Lagrange">
+    <img src="trees.jpg" alt="Trees">
+    <img src="trees_fall.jpeg" alt="Trees Fall">
     <img src="fall.png" alt="Multiresolution Blending Result">
     <img src="fall_final.png" alt="Multiresolution Blending Result">
 
