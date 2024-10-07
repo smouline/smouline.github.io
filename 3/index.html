@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project 3: Face Morphing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        h2 {
+            color: #0054a6; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Overview</h1>
+    <p> Intro </h2>
+    
+    <h3>Part 1: Defining Correspondences</h3>
+  <p> In order to create masks to transform the images in later steps, we need to define corresponding points between them. I used a 
+  corresopndence tool provided on the course website to select around 30 points on each of the following images of Anne Hathaway and Meryl 
+  Streep (The Devil Wears Prada theme) by selecting points around the outline of their faces, around/on their eyes, on their noses, etc. I added 
+  corner points into these corresponding points, so that the transformation captures not only their faces, but also the pixels beyond them (background). 
+    I used the midpoints between the corresponding points to define a mid-way trigulation. The photos and their trigangulations are below. 
+  </p>
+    <img src="cameraman.png" alt="Anne Hathaway">
+    <img src="partials.png" alt="Meryl Streep">
+    <img src="grad_mag.png" alt="Anne Triangles"> 
+    <img src="binarize_grad.png" alt="Meryl Triangles">
+
+    <h3>Part 2: Computing the Midway Face</h3>
+    <p> Description
+    </p>
+    <img src="smooth_grad_1.png" alt= "Anne">
+    <img src="smooth_grad_1.png" alt= "Meryl">
+    <img src="smooth_grad_2.png" alt="Meryl">
+
+    <h2>Part 3: The Morph Sequence</h2>
+    <p>Description </p>
+    <img src="taj.png" alt="Anne Meryl Gif">
+    <p> Description </p>
+    <img src="animal_reunion.png" alt="Paul Amine">
+
+    <h3>Part 4: </h3>
+    <p> Description average face shape morphing faces to that shape results</p>
+    <img src="DerekPicture.jpg" , width="300", height= "200", alt="Face 1">
+    <img src="DerekPicture.jpg" , width="300", height= "200", alt="Face 1">
+    <img src="DerekPicture.jpg" , width="300", height= "200", alt="Face 3">
+    <img src="DerekPicture.jpg" , width="300", height= "200", alt="Face 4">
+    <p> Now, average face by averaging all these faces which were morphed to the average shape. </p> 
+    <img src="best_prof.jpeg" , width="300", height= "200",alt="Average Shape">
+    <p> My face warped to mean geometry (left) and then average face warped to my geometry (right). </p> 
+    <img src="oski.jpg", width="300", height= "200", alt="My face">
+    <img src="oski.jpg", width="300", height= "200", alt="Me to average">
+    <img src="prof_oski.png" alt="Average to me">
+
+
+    <h3>Part 5: Caricatures, Extrapolating from the Mean</h3>
+    <p> Description</p>
+    <img src="apple.jpeg" , width="300", height= "200",alt="alpha = 1.5">
+    <img src="orange.jpeg", width="300", height= "200", alt="alpha = 2.5 ">
+    <img src="orange.jpeg", width="300", height= "200", alt="alpha = 3.5">
+  
+    <h3>Bells and Whistles</h3>
+    <p> Description of over the years</p>
+      <video width="600" height="400" controls>
+        <source src="videos/my-video.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+      </video>
+
+</body>
+</html>
+
