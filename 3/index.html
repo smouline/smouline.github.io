@@ -36,7 +36,8 @@
     midway geometry. I calculated the affine transformation matrix from setting up a system of equations, using the affine transformation
         unknowns and the input and output coordinates of the points in a triangle. In an ideal world, we could transform this forward, but then
     if the transformation gives us a value in between pixels, this would be an issue because we don't have defined intensities. So, it is better to 
-    inverse transform this, starting with the mid-way geometry and then landing on the original image. Doing this for both images and then averaging the
+    inverse transform this, starting with the mid-way geometry and then landing on the original image. Then, if we land between pixels, we can simply
+        interpolate using the values around (I did nearest neighbor through rounding). Doing this for both images and then averaging the
     pixel values within the original images, gives the following mid-way image (in center). </p>
     <img src="media/anne_resized.jpg" , width="300", height= "200",alt= "Anne">
     <img src="media/anne_meryl_midway.jpg" , width="300", height= "200", alt= "Mid Way">
@@ -49,13 +50,13 @@
     be more like the second image and as dissolve_fraction increases, the pixel values will become more like image two.
     </p>
 
-    <p> Morphing = Warping + Dissolving
-        Weighted Avg = (1 - fraction) * image_1 + fraction * image_2
-        Fraction increases for both morphing and dissolving from timestep 0 till timestep 1. 
-    </p>
+    <p> Morphing = Warping + Dissolving     </p>
+    <p>  Weighted Avg = (1 - fraction) * image_1 + fraction * image_2  </p>
+     <p>  Fraction increases for both morphing and dissolving from timestep 0 till timestep 1. </p>
     
     <img src="media/anne_meryl.gif", width="300", height= "200", class="center", alt="Anne Meryl Gif">
     <p> Here's another morhping example. When my brother had longer hair, people would tell him he looks a bit like Sir Paul McCartney. 
+        Doppelganger or no? 
     </p>
     <img src="media/paul_amine.gif", width="300", height= "200", class="center", alt="Paul Amine">
 
@@ -83,8 +84,20 @@
     <img src="media/extrapolation.png", alt="extrapolation">
   
     <h2>Bells and Whistles</h2>
+    <p> My brother a few years ago would get told he looks like Mr. Bean. In fact, one time we were stopped on the street while 
+    sightseeing because someone thought he was the actor who plays Mr. Bean, Rowan Atkinson (fun fact: did you know that Rowan Atkinson
+    was a PhD student in Electrical Engineering before becoming a full time actor?). I decided to take an older photo of my brother and try 
+    to exaggerate the Mr. Bean features based on what we learned. In choosing correspondence points, I made sure to highlight differences 
+    in how Mr. Bean's eyebrows are arched and his smile is extended to see if I can replicate those features in my brother. The results to the 
+    left show my brother warped to Mr. Bean's geometry, and his eyebrows are more angled but not quite arched. The results to the right show
+    Mr. Bean warped to my brother's geometry, which unlike what I expected, exaggerated his features more. </p>
+
+    <img src="media/amine_is_a_bean.png", alt="amine bean">
+    
+    
     <p> Using the morphing algorithm, I created a morphed sequence of myself over time. In order to do this I aligned some photos 
-        by my nose using ginput. I only took 10 correspondences between each consequtive images. Then, I morphed them as seperate gifs.  
+        by my nose using ginput. I only took 10 correspondences between each consecutive pair of images, but this
+        turned out fine. Then, I morphed them as seperate gifs and combined these into a mp4 video.   
         Baby to toddler...elementary school years...middle school...high school, and finally now in college. </p>
     <iframe width="400" height="225" src="https://www.youtube.com/embed/iRUNfG9FWaQ" 
 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
