@@ -25,18 +25,18 @@
   corresopndence tool provided on the course website to select around 30 points on each of the following images of Anne Hathaway and Meryl 
   Streep (The Devil Wears Prada theme) by selecting points around the outline of their faces, around/on their eyes, on their noses, etc. I added 
   corner points into these corresponding points, so that the transformation captures not only their faces, but also the pixels beyond them (background). 
-    I used the midpoints between the corresponding points to define a mid-way trigulation. The same trigulation is used for both images, 
-      but their position of corresponding points are different. The photos (with the triangulation visualized) are below. 
+    I used the midpoints between the corresponding points to define a mid-way triangulation. The same triangulation is used for both images, 
+      but the position of corresponding points are different. The photos (with the triangulation mesh visualized) are below. 
   </p>
-    <img src="media/anne_meryl_triangulation.png", width="600", height= "400", alt="Triangles"> 
+    <img src="media/anne_meryl_triangulation.png", width="800", height= "600", alt="Triangles"> 
 
     <h2>Part 2: Computing the Midway Face</h2>
-    <p> In order to calculate the midway face, we need to use the mid-way triangulation as shown above. For each trianlg in the triangulation, 
+    <p> In order to calculate the midway face, we need to use the mid-way triangulation as shown above. For each triangle in the triangulation, 
         we can calculate an affine transformation matrix that can get us from the points in an original image to corresponding ones in the 
-    midway geometry. I calculated the affine transformation matrix from setting up a system of equations, using the affine transformation
+    midway geometry. I calculated the affine transformation matrix from setting up a system of 6 equations, using the affine transformation
         unknowns and the input and output coordinates of the points in a triangle. In an ideal world, we could transform this forward, but then
-    if the transformation gives us a value in between pixels, this would be an issue because we don't have defined intensities. So, it is better to 
-    inverse transform this, starting with the mid-way geometry and then landing on the original image. Then, if we land between pixels, we can simply
+    if the transformation gives us a value in between pixels, this would be an issue because we don't have defined intensities in the mid-way image.
+    So, it is better to  inverse transform this, starting with the mid-way geometry and then landing on the original image. Then, if we land between pixels, we can simply
         interpolate using the values around (I did nearest neighbor through rounding). Doing this for both images and then averaging the
     pixel values within the original images, gives the following mid-way image (in center). </p>
     <img src="media/anne_resized.jpg" , width="300", height= "200",alt= "Anne">
@@ -45,7 +45,7 @@
 
     <h2>Part 3: The Morph Sequence</h2>
     <p> In order to morph anne into meryl, we can essentially repeat was was done in the mid-way image (which was a simple average), but 
-    this time, over a few frames, take a weighted average using a warp_fraction and a dissolve_fraction. At time step 0, the geometry
+    this time, over a few frames, we can take a weighted average using a warp_fraction and a dissolve_fraction. At time step 0, the geometry
     and pixel values are for image 1. As the warp_fraction increases over the time steps, the geometry to warp to will 
     be more like the second image and as dissolve_fraction increases, the pixel values will become more like image two.
     </p>
@@ -77,7 +77,7 @@
     <p> Earlier with the equation, (1 - warp_frac) * image_1 + warp_frac * image_2, we are interpolating between geometries. 
     But what if instead we extrapolate? Here, I used values outside the 0 to 1 range for the fraction to extrapolate from 
     the mean population geometry. To be more specific, values less than 0 emphasize my features more and values greater than 
-    1 extrapolate from the population mean, exagerating the population's features. Note, I called the fraction alpha
+    1 extrapolate from the population mean calculated above, exagerating the population's features. Note, I called the fraction alpha
     here. Caricatures: </p>
     <img src="media/extrapolation.png", alt="extrapolation">
   
@@ -98,9 +98,9 @@
     <img src="media/amine_is_a_bean.png", alt="amine bean">
     
     
-    <p> Using the morphing algorithm, I created a morphed sequence of myself over time. In order to do this I aligned some photos 
-        by my nose using ginput. I only took 10 correspondences between each consecutive pair of images, but this
-        turned out fine. Then, I morphed them as seperate gifs and combined these into a mp4 video.   
+    <p> Using the morphing algorithm, I created a morphed sequence of myself over time. To do this, I aligned some photos 
+        by my nose using ginput. I only took 10 correspondences between each consecutive pair of images, and then, I morphed them as 
+        seperate gifs and combined these into a mp4 video.   
         Baby to toddler...elementary school years...middle school...high school, and finally now in college. </p>
     <iframe width="800" height="450" src="https://www.youtube.com/embed/iRUNfG9FWaQ" 
 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
