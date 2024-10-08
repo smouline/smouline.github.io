@@ -25,41 +25,68 @@
   corresopndence tool provided on the course website to select around 30 points on each of the following images of Anne Hathaway and Meryl 
   Streep (The Devil Wears Prada theme) by selecting points around the outline of their faces, around/on their eyes, on their noses, etc. I added 
   corner points into these corresponding points, so that the transformation captures not only their faces, but also the pixels beyond them (background). 
-    I used the midpoints between the corresponding points to define a mid-way trigulation. The photos and their trigangulations are below. 
+    I used the midpoints between the corresponding points to define a mid-way trigulation. The same trigulation is used for both images, 
+      but their position of corresponding points are different. The photos (with the triangulation visualized) are below. 
   </p>
     <img src="media/anne_resized.jpg" , width="300", height= "200",alt= "Anne">
     <img src="media/meryl_resized.jpg", width="300", height= "200", alt="Meryl">
     <img src="media/anne_meryl_triangulation.png" alt="Triangles"> 
 
     <h2>Part 2: Computing the Midway Face</h2>
-    <p> Description</p>
+    <p> In order to calculate the midway face, we need to use the mid-way triangulation as shown above. For each trianlg in the triangulation, 
+        we can calculate an affine transformation matrix that can get us from the points in an original image to corresponding ones in the 
+    midway geometry. I calculated the affine transformation matrix from setting up a system of equations, using the affine transformation
+        unknowns and the input and output coordinates of the points in a triangle. In an ideal world, we could transform this forward, but then
+    if the transformation gives us a value in between pixels, this would be an issue because we don't have defined intensities. So, it is better to 
+    inverse transform this, starting with the mid-way geometry and then landing on the original image. Doing this for both images and then averaging the
+    pixel values within the original images, gives the following mid-way image (in center). </p>
     <img src="media/anne_resized.jpg" , width="300", height= "200",alt= "Anne">
     <img src="media/anne_meryl_midway.jpg" , width="300", height= "200", alt= "Mid Way">
     <img src="media/meryl_resized.jpg", width="300", height= "200", alt="Meryl">
 
     <h2>Part 3: The Morph Sequence</h2>
-    <p>Description </p>
+    <p> In order to morph anne into meryl, we can essentially repeat was was done in the mid-way image (which was a simple average), but 
+    this time, over a few frames, take a weighted average using a warp_fraction and a dissolve_fraction. At time step 0, the geometry
+    and pixel values are for image 1. As the warp_fraction increases over the time steps, the geometry to warp to will 
+    be more like the second image and as dissolve_fraction increases, the pixel values will become more like image two.
+    </p>
+
+    <p> Morphing = Warping + Dissolving
+        Weighted Avg = (1 - fraction) * image_1 + fraction * image_2
+        Fraction increases for both morphing and dissolving from timestep 0 till timestep 1. 
+    </p>
+    
     <img src="media/anne_meryl.gif", width="300", height= "200", alt="Anne Meryl Gif">
-    <p> Description </p>
+    <p> Here's another morhping example. When my brother had longer hair, people would tell him he looks a bit like Sir Paul McCartney. 
+    </p>
     <img src="media/paul_amine.gif" alt="Paul Amine">
 
     <h2>Part 4: The "Mean Face" of a Population</h2>
-    <p> Description average face shape morphing faces to that shape results</p>
+    <p> Using 200 images of neutral expressions from the FEI annotated human faces database, I averaged all the corresponding points, 
+    to obtain the average geometry. The triangulation of these points is visualized below. </p>
     <img src="media/average shape.png" alt="Average Shape">
-    <p> Description average face shape morphing faces to that shape results</p>
+    <p> Warping faces into this average geometry produces the following results. Here are 6 examples: </p>
     <img src="media/morphed_examples_grid.png" alt="Faces Warped">
-    <p> Now, average face by averaging all these faces which were morphed to the average shape. </p> 
+    <p> Taking all the 200 warped faces and averaging them, produces the following average neutral face: </p> 
     <img src="media/average_face.jpg" alt="Average Face">
-    <p> My face warped to mean geometry (left) and then average face warped to my geometry (right). </p> 
+    <img src="media/me.jpg" alt="Average Face">
+    <p> I took a photo of myself and had to resize it a bit to be the same size as the images in the dataset, which 
+        ended up distoring the photo a bit :(. I then defined new keypoints between my face and the average geometry in 
+        order to warp my face to the mean face geometry and the average face geometry to me. Results: </p> 
     <img src="media/me_and_average.png" alt="Me and Average">
 
 
     <h2>Part 5: Caricatures, Extrapolating from the Mean</h2>
-    <p> Description</p>
+    <p> Earlier with the equation, (1 - warp_frac) * image_1 + warp_frac * image_2, we are interpolating between geometries. 
+    But what if instead we extrapolate? Here, I used values outside the 0 to 1 range for the fraction to extrapolate from 
+    the mean population geometry. To be more specific, values less than 0 emphasize my features more and values greater than 
+    1 extrapolate from the population mean, exagerating the population's features. Note, I called the fraction alpha
+    here. Caricatures: </p>
     <img src="media/extrapolation.png", alt="extrapolation">
   
     <h2>Bells and Whistles</h2>
-    <p> Description of over the years</p>
+    <p> Using the morphing algorithm, I created a morphed sequence of myself over time. Baby to toddler, elementary school, middle school, 
+    high school, and finally now in college. </p>
     <iframe width="400" height="225" src="https://www.youtube.com/embed/iRUNfG9FWaQ" 
 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
