@@ -41,23 +41,92 @@
         parameter can be normalized to 1. Our goal is to transform points from one image (x1, y1) to corresponding points in another image (x2, y2). 
     </p>
 
+   <div class="math-explanation">
+    <h2>Projective Transformation</h2>
     <p>
-        We want to recover a projective transformation such that:
+        A projective transformation can be represented by a <strong>3 x 3 matrix</strong> \(P\):
     </p>
-
-    <pre>
-    | a  b  c |
-    | d  e  f |  * | x1 | = w * | x2 |
-    | g  h  1 |    | y1 |       | y2 |
-    </pre>
-
-    <p> Expanding this gives us the following system of equations:
+    <p>
+        \[
+        P = \begin{bmatrix}
+        a & b & c \\
+        d & e & f \\
+        g & h & 1
+        \end{bmatrix}
+        \]
     </p>
-
-    <pre>
-    ax1 + by1 + c = (gx1 + hy1 + 1) * x2
-    dx1 + ey1 + f = (gx1 + hy1 + 1) * y2
-    </pre>
+    <p>
+        The point \((x_1, y_1)\) in homogeneous coordinates is represented as:
+    </p>
+    <p>
+        \[
+        \begin{bmatrix}
+        x_1 \\
+        y_1 \\
+        1
+        \end{bmatrix}
+        \]
+    </p>
+    <p>
+        The transformation can be computed as:
+    </p>
+    <p>
+        \[
+        \begin{bmatrix}
+        w \cdot x_2 \\
+        w \cdot y_2 \\
+        w
+        \end{bmatrix}
+        =
+        P \cdot
+        \begin{bmatrix}
+        x_1 \\
+        y_1 \\
+        1
+        \end{bmatrix}
+        \]
+    </p>
+    <p>
+        This results in the following equations:
+    </p>
+    <ul>
+        <li>
+            \(w \cdot x_2 = a \cdot x_1 + b \cdot y_1 + c\)
+        </li>
+        <li>
+            \(w \cdot y_2 = d \cdot x_1 + e \cdot y_1 + f\)
+        </li>
+        <li>
+            \(w = g \cdot x_1 + h \cdot y_1 + 1\)
+        </li>
+    </ul>
+    <p>
+        We can substitute \(w\) into the equations for \(x_2\) and \(y_2\). Rearranging these gives us a system represented in matrix form:
+    </p>
+    <p>
+        \[
+        \begin{bmatrix}
+        a & b & c \\
+        d & e & f \\
+        g & h & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+        x_1 \\
+        y_1 \\
+        1
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+        w \cdot x_2 \\
+        w \cdot y_2 \\
+        w
+        \end{bmatrix}
+        \]
+    </p>
+    <p>
+        This process allows us to isolate the parameters \(a, b, c, d, e, f, g, h\) and set up a system of equations to solve for the projective transformation parameters using known point correspondences.
+    </p>
+</div>
 
     <p> Since we only need 8 degrees of freedom, we technically only need 4 points to solve for our homography matrix. However, to improve accuracy, 
         we can select more points (7-10) and solve the overconstrained system using least squares, minimizing the total error in alignment. 
