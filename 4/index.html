@@ -1,1 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project 4: Auto-Stitching and Photo Mosaics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        h2 {
+            color: #0054a6; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Project 4: Auto-Stitching and Photo Mosaics</h1>
+    <h3>Safaa Mouline</h3>
 
+    <h2>Intro</h2>
+    <p> This project is split into two parts: Part A consists of manually annotating correspondences of images to mosaic them together, whereas Part B 
+        takes this one step further by automating feature matching to stitch together images automatically! 
+    </p>
+    
+    <h2>Part A</h2>
+    <h2>Taking the Images</h2>
+    <p> In order for this to work on a set of images, they must be taken with the same center of projection. Otherwise, the projective transformation
+        wouldn’t work because varying perspectives make alignment inaccurate and distort the final image. To achieve this, I made sure to hold my phone 
+        steady along the camera’s axis, rotating it slightly while keeping the camera stable. 
+    </p>
+
+    <h2>Recovering Homographies</h2>
+    <p> In a projective transformation, we have 8 degrees of freedom, which means we can map one plane to another uniquely by adjusting 8 parameters 
+        (a, b, c, d, e, f, g, and h in the homography matrix). There aren’t 9 degrees of freedom because the transformation is projective, so one 
+        parameter can be normalized to 1. Our goal is to transform points from one image (x1, y1) to corresponding points in another image (x2, y2). 
+    </p>
+
+    <p>
+        We want to recover a projective transformation such that:
+    </p>
+
+    <pre>
+    | a  b  c |
+    | d  e  f |  * | x1 | = w * | x2 |
+    | g  h  1 |    | y1 |       | y2 |
+    </pre>
+
+    <p> Expanding this gives us the following system of equations:
+    </p>
+
+    <pre>
+    ax1 + by1 + c = (gx1 + hy1 + 1) * x2
+    dx1 + ey1 + f = (gx1 + hy1 + 1) * y2
+    </pre>
+
+    <p> Since we only need 8 degrees of freedom, we technically only need 4 points to solve for our homography matrix. However, to improve accuracy, 
+        we can select more points (7-10) and solve the overconstrained system using least squares, minimizing the total error in alignment. 
+        This approach finds the optimal homography matrix to map from one image to another. Note: I took these correspondences using a custom 
+        annotation tool.
+    </p>
+
+    <h2>Warping the Images and Rectification</h2>
+    <p> Once we have a homography matrix between images, warping involves using the inverse of this matrix. If we were to use a forward warp, 
+        some pixels could land between grid points, causing issues with pixel alignment and creating “holes” in the final image. 
+        Inverse warping avoids this by interpolating from surrounding pixels, which I implemented using nearest-neighbor interpolation through simple rounding.
+    </p>
+    <p> To check the accuracy of the homography, I used image rectification. By selecting clearly defined rectangular objects, such as a textbook or 
+        poster, I could map their corners and ensure they were transformed into a clean rectangle. Here are examples of these rectifications.
+    </p>
+
+    <h2>Blending into a Mosaic</h2>
+    <p> Although the warping worked, creating a seamless mosaic required precise image alignment. The idea was to position image 2 on a canvas, 
+        warp image 1 to it, and overlay the result. However, alignment issues arose due to shifts introduced during warping. I calculated offsets 
+        to track these shifts relative to the original image corners. Here’s an example of naive mosaicing:
+    </p>
+    
+    <p> To blend images and reduce visible seams, I experimented with alpha blending, distance transforms, and masks. For my images, the most 
+        effective method was identifying overlapping regions and masking along the vertical seam at the midpoint. Importing my multi-resolution blending 
+        code from Project 2, I created a two-level Laplacian stack. Here are my final mosaics:
+    </p>
+
+    <h2>Part B: Feature Matching and Auto-Stitching</h2>
+
+    <p> Marking correspondences by hand is time-consuming, so in Part B, we aim to automate this process by detecting and matching features 
+        between images. Automated matching can be more accurate than manual annotation, especially for complex images.
+    </p>
+
+    <h2>Detecting Corner Features in an Image</h2>
+    <p> To detect corners, I implemented the Harris corner detector, which identifies regions where intensity shifts in multiple directions. 
+      Here are the Harris corner detections for my images: 
+    </p>
+
+    <h2>Adaptive Non-Maximal Suppression (ANMS)</h2>
+    <p> ANMS prioritizes high-quality corners by suppressing weaker points near stronger corners, ensuring that detected features are 
+        well-spaced and avoid clustering. This improves efficiency and accuracy in the matching process. Following the MOPS paper, I set a 
+        threshold distance to achieve an even distribution of 100 points. 
+    </p>
+
+    <h2>Extracting Feature Descriptors</h2>
+    <p> I extracted feature descriptors by taking a 40x40 window around each point, subsampling it to 8x8 with Gaussian blurring to reduce 
+        sensitivity to noise. Bias/gain normalization further ensures descriptor consistency by subtracting the mean and dividing by the standard 
+        deviation. Here are the descriptors for several initial points:
+    </p>
+
+    <h2>Matching Feature Descriptors</h2>
+    <p> To match descriptors between images, I calculated pairwise distances using the dist2 function provided, which returns squared Euclidean distances. 
+        By setting athreshold of 0.8 Below are the matching points after 
+        feature matching.
+    </p>
+
+    <h2>RANSAC</h2>
+    <p> While most feature matches are accurate, some mismatches remain. Using RANSAC, I filtered outliers by iteratively fitting homographies 
+        to random subsets of points and identifying the transformation with the most inliers. I set a threshold of 5 
+        to balance accuracy and runtime. With RANSAC-refined homographies, I then repeated the blending process used in Part A. Here’s the 
+        final result:
+    </p>
+
+    <p> Here are additional results for other images:
+    </p>
+
+    <h2>Concluding Thoughts</h2>
+    <p> This project was an exciting exploration into the possibilities of image processing. Using linear algebra, we successfully transformed, 
+        warped, and aligned images to create cohesive mosaics. Image rectification in particular just is so cool to me because 
+      The autostitching portion, in particular, simplified a complex process and yielded impressive 
+        results with minimal user input.
+    </p>
+  
+</body>
+</html>
