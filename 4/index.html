@@ -70,23 +70,45 @@
     <p> To check the accuracy of the homography, I used image rectification. By selecting clearly defined rectangular objects, such as a textbook or 
         poster, I could map their corners and ensure they were transformed into a clean rectangle. Here are examples of these rectifications:
     </p>
-    
+
+    <img src="media/spanish_textbook.jpeg" alt= "Spanish">
+    <img src="media/spanish_textbook_rectification.png" alt= "Spanish Textbook">
     <img src="media/posters.jpeg" alt= "Music corner">
     <img src="media/poster_rectification.png" alt= "Poster">
+    
     
     <h2>Blending into a Mosaic</h2>
     <p> Although the warping worked, creating a seamless mosaic required precise image alignment. The idea was to position image 2 on a canvas, 
         warp image 1 to it, and overlay the result. However, alignment issues arose due to shifts introduced during warping. I calculated offsets 
         to track these shifts relative to the original image corners. Here’s an example of naive mosaicing:
     </p>
+
+    <img src="media/night1.jpeg" alt= "naive">
+    <img src="media/night2.jpeg" alt= "naive">
+    <img src="media/night_naive.png" alt= "naive">
+    
     
     <p> Let's get rid of this seam. To blend images and reduce visible seams, I experimented with alpha blending, distance transforms, and masks. For my images, the most 
         effective method was identifying overlapping regions and masking along the vertical seam at the midpoint. Importing my multi-resolution blending 
-        code from Project 2, I created a two-level Laplacian stack. Here are my final mosaics:
+        code from Project 2, I created a two-level Laplacian stack. Here is the mask used, the blending (for this one I used 3-levels) and 
+        it blended: 
     </p>
 
-    <img src="media/campus_final.png" alt= "Campus">
+    <img src="media/sample_mask.png" alt= "Night">
+    <img src="media/night.png" alt= "Night">
     <img src="media/night_final.png" alt= "Night">
+    
+    
+
+    <p> Here are more mosaics:
+    </p>
+
+    <img src="media/campus1.jpeg" alt= "naive">
+    <img src="media/campus2.jpeg" alt= "naive">
+    <img src="media/campus_final.png" alt= "Campus">
+
+    <img src="media/left_painting.jpeg" alt= "naive">
+    <img src="media/center_painting.jpeg" alt= "naive">
     <img src="media/paintings_final.png" alt= "Paintings">
 
     <h2>Part B: Feature Matching and Auto-Stitching</h2>
@@ -96,22 +118,23 @@
     </p>
 
     <h2>Detecting Corner Features in an Image</h2>
-    <p> To detect corners, I implemented the Harris corner detector, which identifies regions where intensity shifts in multiple directions. 
-      Here are the Harris corner detections for my images: 
+    <p> To detect corners, I used the Harris corner detector code provided, which identifies regions where intensity shifts in multiple directions. 
+      Here are the Harris corner detections for the painting image for example: 
     </p>
     
     <img src="media/harris_corners.png" alt= "Campus">
-    <img src="media/night_final.png" alt= "Night">
-    <img src="media/paintings_final.png" alt= "Paintings">
     
 
     <h2>Adaptive Non-Maximal Suppression (ANMS)</h2>
-    <p> ANMS prioritizes high-quality corners by suppressing weaker points near stronger corners, ensuring that detected features are 
+    <p> There are so many points--we need to select the best ones. 
+        ANMS prioritizes high-quality corners by suppressing weaker points near stronger corners, ensuring that detected features are 
         well-spaced and avoid clustering. This improves efficiency and accuracy in the matching process. Following the MOPS paper, I set a 
         threshold distance to achieve an even distribution of 100 points. Here are the points after ANMS:
     </p>
 
-    <img src="media/anms" alt= "Campus">
+    <img src="media/anm_paintings.png" alt= "Campus">
+    <img src="media/anms_night.png" alt= "Campus">
+    <img src="media/anms_campus.png" alt= "Campus">
 
     <h2>Extracting Feature Descriptors</h2>
     <p> I extracted feature descriptors by taking a 40x40 window around each point, subsampling it to 8x8 with Gaussian blurring to reduce 
@@ -127,22 +150,32 @@
         feature matching. Here are the features matched: 
     </p>
 
-    <img src="media/matches.png" alt= "Matches">
+    <img src="media/matches_paintings.png" alt= "Matches">
+    <img src="media/matches_night.png" alt= "Matches">
+    <img src="media/matches_campus.png" alt= "Matches">
     
 
     <h2>RANSAC</h2>
     <p> While most feature matches are accurate, some mismatches remain. Using RANSAC, I filtered outliers by iteratively fitting homographies 
         to random subsets of points and identifying the transformation with the most inliers. I set a threshold of 5 
         to balance accuracy and runtime. With RANSAC-refined homographies, I then repeated the blending process used in Part A. Here’s the 
-        final result:
+        final results of the auto-stitching:
     </p>
 
-    <p> Here are additional results for other images:
+
+    <img src="media/paintings_auto_final.png" alt= "Matches">
+    <img src="media/night_auto_final.png" alt= "Matches">
+    <img src="media/campus_auto_final.png" alt= "Matches">
+
+    <p> RANSAC may not work so well with repetitive features becasue?? I wanted to test this out, so I tried auto-stitching a brick wall, but
+        it actually did pretty well! 
     </p>
 
-    <img src="media/campus_auto_final.png" alt= "Campus">
-    <img src="media/night_auto_final.png" alt= "Night">
-    <img src="media/paintings_auto_final.png" alt= "Paintings">
+    <img src="media/wall_left.jpeg" alt= "Matches">
+    <img src="media/wall_right.jpeg" alt= "Matches">
+    <img src="media/matches_wall.png" alt= "Matches">
+    <img src="media/wall_auto_final.png" alt= "Matches">
+
 
     <h2>Concluding Thoughts</h2>
     <p> This project was an exciting exploration into the possibilities of image processing. Using linear algebra, we successfully transformed, 
