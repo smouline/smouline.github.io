@@ -26,23 +26,23 @@
     <h3>Safaa Mouline</h3>
 
     <h2>Intro</h2>
-    <p>This project is split into two parts: Part A consists of manually annotating correspondences of images to mosaic them together, whereas Part B 
-        takes this one step further by automating feature matching to stitch together images automatically! 
+    <p>This project is split into two parts: Part A consists of manually annotating correspondences of images to mosaic them together, whereas Part B
+        takes this one step further by automating feature matching to stitch together images automatically! 
     </p>
     
     <h1>Part A: Image Warping and Mosaicing</h1>
     <h2>Taking the Images</h2>
     <p>In order for this to work on a set of images, they must be taken with the same center of projection (COP). Otherwise, the projective transformation
         wouldn’t work because varying perspectives make alignment inaccurate and distort the final image. To achieve this, I made sure to hold my phone 
-        steady along the camera’s axis, rotating it slightly while keeping the camera stable. 
+        steady along the camera’s axis, rotating it slightly while keeping the camera stable. 
     </p>
 
     <h2>Recovering Homographies</h2>
-    <p>In a projective transformation, we have 8 degrees of freedom, which means we can map one plane to another uniquely by adjusting 8 parameters 
-        (a, b, c, d, e, f, g, and h in the homography matrix). Our goal is to transform points from one image \((x_1, y_1)\) to corresponding points in another image \((x_2, y_2)\). 
+    <p>In a projective transformation, we have 8 degrees of freedom, which means we can map one plane to another uniquely by adjusting 8 parameters (a, b, c, d, e, f, g, and h in the homography matrix). 
+        Our goal is to transform points from one image \((x_1, y_1)\) to corresponding points in another image \((x_2, y_2)\). 
     </p>
 
-   <div class="math-explanation">
+    <div class="math-explanation">
     <p>
         A projective transformation can be represented by a <strong>3 x 3 matrix</strong> \( H \):
     </p>
@@ -56,75 +56,44 @@
         \]
     </p>
     <p>
-        The point \((x_1, y_1)\) in homogeneous coordinates is represented as:
+        This matrix \( H \) allows us to map points from one image to another. If we take a point \((x, y)\) in the first image, we can calculate its corresponding location \((x_2, y_2)\) in the second image using homogeneous coordinates. The transformed point \((x_2, y_2)\) satisfies:
     </p>
     <p>
         \[
-        \begin{bmatrix}
-        x_1 \\
-        y_1 \\
-        1
-        \end{bmatrix}
+        w \cdot x_2 = a \cdot x + b \cdot y + c \quad \text{and} \quad w \cdot y_2 = d \cdot x + e \cdot y + f
+        \]
+        \[
+        w = g \cdot x + h \cdot y + 1
         \]
     </p>
     <p>
-        The transformation can be computed as:
+        Rearranging these equations, we can express this transformation in matrix form:
     </p>
     <p>
         \[
         \begin{bmatrix}
-        w \cdot x_2 \\
-        w \cdot y_2 \\
-        w
-        \end{bmatrix}
-        =
-        P \cdot
-        \begin{bmatrix}
-        x_1 \\
-        y_1 \\
-        1
-        \end{bmatrix}
-        \]
-    </p>
-    <p>
-        This results in the following equations:
-    </p>
-    <ul>
-        <li>
-            \(w \cdot x_2 = a \cdot x_1 + b \cdot y_1 + c\)
-        </li>
-        <li>
-            \(w \cdot y_2 = d \cdot x_1 + e \cdot y_1 + f\)
-        </li>
-        <li>
-            \(w = g \cdot x_1 + h \cdot y_1 + 1\)
-        </li>
-    </ul>
-    <p>
-        We can substitute \(w\) into the equations for \(x_2\) and \(y_2\). Rearranging these gives us a system represented in matrix form:
-    </p>
-    <p>
-        \[
-        \begin{bmatrix}
-        a & b & c \\
-        d & e & f \\
-        g & h & 1
+        x & y & 1 & 0 & 0 & 0 & -x1 \cdot x_2 & -y \cdot x_2 \\
+        0 & 0 & 0 & x & y & 1 & -x1 \cdot y_2 & -y \cdot y_2
         \end{bmatrix}
         \begin{bmatrix}
-        x_1 \\
-        y_1 \\
-        1
+        a \\
+        b \\
+        c \\
+        d \\
+        e \\
+        f \\
+        g \\
+        h
         \end{bmatrix}
         =
         \begin{bmatrix}
-        w \cdot x_2 \\
-        w \cdot y_2 \\
-        w
+        x_2 \\
+        y_2
         \end{bmatrix}
         \]
     </p>
     <p>
-        This process allows us to isolate the parameters \(a, b, c, d, e, f, g, h\) and set up a system of equations to solve for the projective transformation parameters using known point correspondences.
+        This matrix system lets us solve for the parameters \(a, b, c, d, e, f, g, h\) by using known point correspondences \((x, y)\) and \((x_2, y_2)\) from two images.
     </p>
 </div>
 
