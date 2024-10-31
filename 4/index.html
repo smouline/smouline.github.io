@@ -1,138 +1,142 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Project 4: Auto-Stitching and Photo Mosaics</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-        h2 {
-            color: #0054a6; 
-        } .part-title {
-            color: black; 
-            font-size: smaller; 
-        }
-    </style>
+    <title>Project 4: Auto-Stitching and Photo Mosaics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        h2 {
+            color: #0054a6; 
+        }
+        .part-title {
+            color: black; 
+            font-size: smaller; 
+        }
+    </style>
+    <!-- Load MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <h1>Project 4: Auto-Stitching and Photo Mosaics</h1>
-    <h3>Safaa Mouline</h3>
+    <h1>Project 4: Auto-Stitching and Photo Mosaics</h1>
+    <h3>Safaa Mouline</h3>
 
-    <h2>Intro</h2>
-    <p> This project is split into two parts: Part A consists of manually annotating correspondences of images to mosaic them together, whereas Part B 
-        takes this one step further by automating feature matching to stitch together images automatically! 
-    </p>
-    
-    <h1>Part A: Image Warping and Mosaicing</h1>
-    <h2>Taking the Images</h2>
-    <p> In order for this to work on a set of images, they must be taken with the same center of projection. Otherwise, the projective transformation
-        wouldn’t work because varying perspectives make alignment inaccurate and distort the final image. To achieve this, I made sure to hold my phone 
-        steady along the camera’s axis, rotating it slightly while keeping the camera stable. 
-    </p>
+    <h2>Intro</h2>
+    <p>This project is split into two parts: Part A consists of manually annotating correspondences of images to mosaic them together, whereas Part B 
+        takes this one step further by automating feature matching to stitch together images automatically! 
+    </p>
+    
+    <h1>Part A: Image Warping and Mosaicing</h1>
+    <h2>Taking the Images</h2>
+    <p>In order for this to work on a set of images, they must be taken with the same center of projection. Otherwise, the projective transformation
+        wouldn’t work because varying perspectives make alignment inaccurate and distort the final image. To achieve this, I made sure to hold my phone 
+        steady along the camera’s axis, rotating it slightly while keeping the camera stable. 
+    </p>
 
-    <h2>Recovering Homographies</h2>
-    <p> In a projective transformation, we have 8 degrees of freedom, which means we can map one plane to another uniquely by adjusting 8 parameters 
-        (a, b, c, d, e, f, g, and h in the homography matrix). There aren’t 9 degrees of freedom because the transformation is projective, so one 
-        parameter can be normalized to 1. Our goal is to transform points from one image (x1, y1) to corresponding points in another image (x2, y2). 
-    </p>
+    <h2>Recovering Homographies</h2>
+    <p>In a projective transformation, we have 8 degrees of freedom, which means we can map one plane to another uniquely by adjusting 8 parameters 
+        (a, b, c, d, e, f, g, and h in the homography matrix). There aren’t 9 degrees of freedom because the transformation is projective, so one 
+        parameter can be normalized to 1. Our goal is to transform points from one image \((x_1, y_1)\) to corresponding points in another image \((x_2, y_2)\). 
+    </p>
 
-   <div class="math-explanation">
-    <h2>Projective Transformation</h2>
-    <p>
-        A projective transformation can be represented by a <strong>3 x 3 matrix</strong> \(P\):
-    </p>
-    <p>
-        \[
-        P = \begin{bmatrix}
-        a & b & c \\
-        d & e & f \\
-        g & h & 1
-        \end{bmatrix}
-        \]
-    </p>
-    <p>
-        The point \((x_1, y_1)\) in homogeneous coordinates is represented as:
-    </p>
-    <p>
-        \[
-        \begin{bmatrix}
-        x_1 \\
-        y_1 \\
-        1
-        \end{bmatrix}
-        \]
-    </p>
-    <p>
-        The transformation can be computed as:
-    </p>
-    <p>
-        \[
-        \begin{bmatrix}
-        w \cdot x_2 \\
-        w \cdot y_2 \\
-        w
-        \end{bmatrix}
-        =
-        P \cdot
-        \begin{bmatrix}
-        x_1 \\
-        y_1 \\
-        1
-        \end{bmatrix}
-        \]
-    </p>
-    <p>
-        This results in the following equations:
-    </p>
-    <ul>
-        <li>
-            \(w \cdot x_2 = a \cdot x_1 + b \cdot y_1 + c\)
-        </li>
-        <li>
-            \(w \cdot y_2 = d \cdot x_1 + e \cdot y_1 + f\)
-        </li>
-        <li>
-            \(w = g \cdot x_1 + h \cdot y_1 + 1\)
-        </li>
-    </ul>
-    <p>
-        We can substitute \(w\) into the equations for \(x_2\) and \(y_2\). Rearranging these gives us a system represented in matrix form:
-    </p>
-    <p>
-        \[
-        \begin{bmatrix}
-        a & b & c \\
-        d & e & f \\
-        g & h & 1
-        \end{bmatrix}
-        \begin{bmatrix}
-        x_1 \\
-        y_1 \\
-        1
-        \end{bmatrix}
-        =
-        \begin{bmatrix}
-        w \cdot x_2 \\
-        w \cdot y_2 \\
-        w
-        \end{bmatrix}
-        \]
-    </p>
-    <p>
-        This process allows us to isolate the parameters \(a, b, c, d, e, f, g, h\) and set up a system of equations to solve for the projective transformation parameters using known point correspondences.
-    </p>
+   <div class="math-explanation">
+    <h2>Projective Transformation</h2>
+    <p>
+        A projective transformation can be represented by a <strong>3 x 3 matrix</strong> \( P \):
+    </p>
+    <p>
+        \[
+        P = \begin{bmatrix}
+        a & b & c \\
+        d & e & f \\
+        g & h & 1
+        \end{bmatrix}
+        \]
+    </p>
+    <p>
+        The point \((x_1, y_1)\) in homogeneous coordinates is represented as:
+    </p>
+    <p>
+        \[
+        \begin{bmatrix}
+        x_1 \\
+        y_1 \\
+        1
+        \end{bmatrix}
+        \]
+    </p>
+    <p>
+        The transformation can be computed as:
+    </p>
+    <p>
+        \[
+        \begin{bmatrix}
+        w \cdot x_2 \\
+        w \cdot y_2 \\
+        w
+        \end{bmatrix}
+        =
+        P \cdot
+        \begin{bmatrix}
+        x_1 \\
+        y_1 \\
+        1
+        \end{bmatrix}
+        \]
+    </p>
+    <p>
+        This results in the following equations:
+    </p>
+    <ul>
+        <li>
+            \(w \cdot x_2 = a \cdot x_1 + b \cdot y_1 + c\)
+        </li>
+        <li>
+            \(w \cdot y_2 = d \cdot x_1 + e \cdot y_1 + f\)
+        </li>
+        <li>
+            \(w = g \cdot x_1 + h \cdot y_1 + 1\)
+        </li>
+    </ul>
+    <p>
+        We can substitute \(w\) into the equations for \(x_2\) and \(y_2\). Rearranging these gives us a system represented in matrix form:
+    </p>
+    <p>
+        \[
+        \begin{bmatrix}
+        a & b & c \\
+        d & e & f \\
+        g & h & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+        x_1 \\
+        y_1 \\
+        1
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+        w \cdot x_2 \\
+        w \cdot y_2 \\
+        w
+        \end{bmatrix}
+        \]
+    </p>
+    <p>
+        This process allows us to isolate the parameters \(a, b, c, d, e, f, g, h\) and set up a system of equations to solve for the projective transformation parameters using known point correspondences.
+    </p>
 </div>
 
-    <p> Since we only need 8 degrees of freedom, we technically only need 4 points to solve for our homography matrix. However, to improve accuracy, 
-        we can select more points (7-10) and solve the overconstrained system using least squares, minimizing the total error in alignment. 
-        This approach finds the optimal homography matrix to map from one image to another. Note: I took these correspondences using a custom 
-        annotation tool.
-    </p>
+    <p>Since we only need 8 degrees of freedom, we technically only need 4 points to solve for our homography matrix. However, to improve accuracy, 
+        we can select more points (7-10) and solve the overconstrained system using least squares, minimizing the total error in alignment. 
+        This approach finds the optimal homography matrix to map from one image to another. Note: I took these correspondences using a custom 
+        annotation tool.
+        
 
     <h2>Warping the Images and Rectification</h2>
     <p> Once we have a homography matrix between images, warping involves using the inverse of this matrix. If we were to use a forward warp, 
