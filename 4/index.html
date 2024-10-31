@@ -33,7 +33,7 @@
     <h1>Part A: Image Warping and Mosaicing</h1>
     <h2>Taking the Images</h2>
     <p>In order for this to work on a set of images, they must be taken with the same center of projection (COP). Otherwise, the projective transformation
-        wouldn’t work because varying perspectives make alignment inaccurate and distort the final image. To achieve this, I made sure to hold my phone 
+        wouldn’t work because varying perspectives make alignment inaccurate and distort the final image. To achieve this, I made sure to hold my phone 
         steady along the camera’s axis, rotating it slightly while keeping the camera stable. 
     </p>
 
@@ -72,8 +72,8 @@
     <p>
         \[
         \begin{bmatrix}
-        x & y & 1 & 0 & 0 & 0 & -x1 \cdot x_2 & -y \cdot x_2 \\
-        0 & 0 & 0 & x & y & 1 & -x1 \cdot y_2 & -y \cdot y_2
+        x & y & 1 & 0 & 0 & 0 & -x1 \cdot x_2 & -y1 \cdot x_2 \\
+        0 & 0 & 0 & x & y & 1 & -x1 \cdot y_2 & -y1 \cdot y_2
         \end{bmatrix}
         \begin{bmatrix}
         a \\
@@ -98,12 +98,9 @@
 </div>
 
     <p>Since we only need 8 degrees of freedom, we technically only need 4 points to solve for our homography matrix. However, to improve accuracy and 
-        decrease the effect of noise 
-        we can select more points (7-10) and solve the overconstrained system using least squares.  
-        This approach finds the optimal homography matrix to map from one image to another. Note: I took these correspondences using the tool provided 
-        from Project 3  </p>
-        
-        
+        decrease the effect of noise we can select more points (7-10) and solve the overconstrained system using least squares. This approach finds the optimal homography matrix to map from one image to another. 
+        Note: I took these correspondences using the tool provided from Project 3  </p>
+         
 
     <h2>Warping the Images and Rectification</h2>
     <p> Once we have a homography matrix between images, warping involves using the inverse of this matrix. If we were to use a forward warp, 
@@ -144,12 +141,12 @@
     
     
 
-    <p> Here are more mosaics:
+    <p> Here are more mosaics for more images:
     </p>
 
     <img src="media/campus1.jpeg" width="300", height= "200" alt= "naive">
     <img src="media/campus2.jpeg" width="300", height= "200" alt= "naive">
-    <img src="media/campus_final.png" alt= "Campus">
+    <img src="media/campus_mosaiced.png" alt= "Campus">
 
     <img src="media/left_painting.jpeg" width="300", height= "200" alt= "naive">
     <img src="media/center_painting.jpeg" width="300", height= "200" alt= "naive">
@@ -172,24 +169,26 @@
     
 
     <h2>Adaptive Non-Maximal Suppression (ANMS)</h2>
-    <p> There are so many points--we need to select the best ones. After detecting corner features in an image, 
-        the challenge lies in selecting the most robust points to avoid redundancy and ensure optimal feature matching. 
-        To achieve this, I implemented Adaptive Non-Maximal Suppression (ANMS) based on the MOPS paper. 
-        This technique identifies high-quality corner points while maintaining an even spatial distribution by prioritizing features that are not too close to stronger corners. </p> 
-    <p> In my implementation, I sort corner points by their Harris response value, and for each point, I calculate the minimum distance to any stronger corner detected earlier. 
+    <p> There are too many points--we need to select the best ones. After detecting corner features in an image, 
+        the challenge lies in selecting points to avoid redundancy and ensure feature matching. 
+        To achieve this, I implemented Adaptive Non-Maximal Suppression (ANMS) as descriped in the MOPS paper. 
+        This identifies high-quality corner points while maintaining an even spatial distribution by prioritizing features that are not too close to stronger corners. </p> 
+    <p> In my implementation, I sorted corner points by their Harris response value, and for each point, I calculate the minimum distance to any stronger corner detected earlier. 
         The idea is that weaker corners near stronger ones are suppressed, leaving a well-distributed set of robust corners. 
         Although the paper "Efficient adaptive non-maximal suppression algorithms for homogeneous spatial keypoint distribution" suggests using a k-dtree for efficiency, I calculated distances directly to maintain the same principle. 
         To achieve an even distribution, I retained the top 100 points with the largest suppression radii. </p>
     </p>
 
-    <img src="media/anm_paintings.png" alt= "Campus">
-    <img src="media/anms_night.png" alt= "Campus">
-    <img src="media/anms_campus.png" alt= "Campus">
+    <img src="media/anm_paintings.png" width="300", height= "200" alt= "Campus">
+    <img src="media/anms_night.png" width="300", height= "200" alt= "Campus">
+    <img src="media/anms_campus.png" width="300", height= "200" alt= "Campus">
 
     <h2>Extracting Feature Descriptors</h2>
     <p> I extracted feature descriptors by taking a 40x40 window around each point, subsampling it to 8x8 with Gaussian blurring to reduce 
-        sensitivity to noise. Bias/gain normalization further ensures descriptor consistency by subtracting the mean and dividing by the standard 
-        deviation. Here are the descriptors for several initial points:
+        sensitivity to noise. Then, I applied bias/gain normalization by subtracting the mean and dividing by the standard 
+        deviation for each patch. The descriptors for several initial points are below. I flattened these matrices for the matching process 
+        later. 
+        
     </p>
 
     <img src="media/feature_descriptors.png" alt= "Features">
@@ -211,10 +210,10 @@
     
 
     <h2>RANSAC</h2>
-    <p> While most feature matches are accurate, some mismatches remain. To accurately stitch images together, 
+    <p> While most feature matches are accurate, some mismatches remain as evidenced by the matches above. To accurately stitch images together, 
         we need to refine the homography by removing outlier feature points. This is where RANSAC (Random Sample Consensus) comes in. 
         RANSAC identifies a robust homography transformation by repeatedly sampling random subsets of feature pairs. For each iteration, the algorithm selects four 
-        random feature pairs to compute an initial homography \( H \). Using \( H \), we project all points from the first image onto the second and measure the
+        random feature pairs to compute an initial homography \( H \). Using \( H \), we project the points from the first image onto the second and measure the
         distance between projected points and their actual counterparts. Points with a distance below a specified threshold (5 pixels in this case) are counted as inliers,
         meaning they fit well with the current homography. The homography with the largest set of inliers is selected as the best model. Finally, we re-compute this homography using all inliers in a least-squares approach for improved accuracy as done in Part A.
         Here are the results from creating the mosaic like done in Part A and blending using the homography after RANSAC. 
@@ -223,11 +222,10 @@
 
     <img src="media/paintings_auto_final.png" alt= "Matches">
     <img src="media/night_auto_final.png" alt= "Matches">
-    <img src="media/campus_mosaiced.png" alt= "Matches">
+    <img src="media/campus_auto.png" alt= "Matches">
 
     <p> Apparently, auto-stitching may not work so well with repetitive features becasue of the ambiguitiy causing wrong matching. 
-        I wanted to test this out, so I tried auto-stitching a brick wall, but
-        it actually did pretty well! Here are the results below:
+        I wanted to test this out, so I tried auto-stitching a brick wall, but it actually did pretty well! Here are the results below:
     </p>
 
     <img src="media/wall_left.jpeg" width="300", height= "200"alt= "Matches">
@@ -237,7 +235,7 @@
 
 
     <h2>Concluding Thoughts</h2>
-    <p> Using linear algebra, it was possible to successfully transform, warp, and align images to create cohesive mosaics. 
+    <p> I learned a lot through this project. Using linear algebra, it was possible to successfully transform, warp, and align images to create cohesive mosaics. 
         In particular, I find image rectification to be really cool. I don't know if 
         I'm just easily blown away, but being able to literally transform the perpective to read a poster with some simple homography
         code is so cool. It almost feels like  unearthing new content in the image but it was already there! 
