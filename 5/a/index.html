@@ -15,16 +15,21 @@
             font-size: smaller; 
         }
         .image-group {
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
             margin: 20px 0;
         }
-        .image-group img {
+        figure {
+            margin: 0;
+            text-align: center;
+        }
+        figure img {
             max-width: 200px;
             height: auto;
-            margin: 5px;
         }
-        .caption {
-            text-align: center;
+        figcaption {
             font-size: smaller;
             color: gray;
         }
@@ -40,92 +45,145 @@
     <p>Reflect on the quality of the outputs and their relationships to the text prompts...</p>
 
     <div class="image-group">
-        <img src="media/10_steps_output_0.png" alt="10_steps_output_0">
-        <div class="caption">10 Steps Output 0</div>
-        <img src="media/10_steps_output_1.png" alt="10_steps_output_1">
-        <div class="caption">10 Steps Output 1</div>
-        <img src="media/10_steps_output_2.png" alt="10_steps_output_2">
-        <div class="caption">10 Steps Output 2</div>
+        <figure>
+            <img src="media/10_steps_output_0.png" alt="10_steps_output_0">
+            <figcaption>10 Steps Output 0</figcaption>
+        </figure>
+        <figure>
+            <img src="media/10_steps_output_1.png" alt="10_steps_output_1">
+            <figcaption>10 Steps Output 1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/10_steps_output_2.png" alt="10_steps_output_2">
+            <figcaption>10 Steps Output 2</figcaption>
+        </figure>
     </div>
 
     <div class="image-group">
-        <img src="media/20_steps_output_0.png" alt="20_steps_output_0">
-        <div class="caption">20 Steps Output 0</div>
-        <img src="media/20_steps_output_1.png" alt="20_steps_output_1">
-        <div class="caption">20 Steps Output 1</div>
-        <img src="media/20_steps_output_2.png" alt="20_steps_output_2">
-        <div class="caption">20 Steps Output 2</div>
+        <figure>
+            <img src="media/20_steps_output_0.png" alt="20_steps_output_0">
+            <figcaption>20 Steps Output 0</figcaption>
+        </figure>
+        <figure>
+            <img src="media/20_steps_output_1.png" alt="20_steps_output_1">
+            <figcaption>20 Steps Output 1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/20_steps_output_2.png" alt="20_steps_output_2">
+            <figcaption>20 Steps Output 2</figcaption>
+        </figure>
     </div>
 
     <div class="image-group">
-        <img src="media/100_steps_output_0.png" alt="100_steps_output_0">
-        <div class="caption">100 Steps Output 0</div>
-        <img src="media/100_steps_output_1.png" alt="100_steps_output_1">
-        <div class="caption">100 Steps Output 1</div>
-        <img src="media/100_steps_output_2.png" alt="100_steps_output_2">
-        <div class="caption">100 Steps Output 2</div>
+        <figure>
+            <img src="media/100_steps_output_0.png" alt="100_steps_output_0">
+            <figcaption>100 Steps Output 0</figcaption>
+        </figure>
+        <figure>
+            <img src="media/100_steps_output_1.png" alt="100_steps_output_1">
+            <figcaption>100 Steps Output 1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/100_steps_output_2.png" alt="100_steps_output_2">
+            <figcaption>100 Steps Output 2</figcaption>
+        </figure>
     </div>
 
     <h2>1.1: The Forward Process</h2>
     <p>Explanation placeholder.</p>
 
     <div class="image-group">
-        <img src="media/campanile_resized.png" alt="campanile_resized">
-        <div class="caption">Campanile Resized</div>
-        <img src="media/noised_t_250.png" alt="noised_t_250">
-        <div class="caption">Noised at Step 250</div>
-        <img src="media/noised_t_500.png" alt="noised_t_500">
-        <div class="caption">Noised at Step 500</div>
-        <img src="media/noised_t_750.png" alt="noised_t_750">
-        <div class="caption">Noised at Step 750</div>
+        <figure>
+            <img src="media/campanile_resized.png" alt="campanile_resized">
+            <figcaption>Campanile Resized</figcaption>
+        </figure>
+        <figure>
+            <img src="media/noised_t_250.png" alt="noised_t_250">
+            <figcaption>Noised at Step 250</figcaption>
+        </figure>
+        <figure>
+            <img src="media/noised_t_500.png" alt="noised_t_500">
+            <figcaption>Noised at Step 500</figcaption>
+        </figure>
+        <figure>
+            <img src="media/noised_t_750.png" alt="noised_t_750">
+            <figcaption>Noised at Step 750</figcaption>
+        </figure>
     </div>
 
     <h2>1.2: Classical Denoising</h2>
     <p>Explanation placeholder.</p>
 
     <div class="image-group">
-        <img src="media/noised_t_250.png" alt="noised_t_250">
-        <div class="caption">Noised Image Step 250</div>
-        <img src="media/noised_t_500.png" alt="noised_t_500">
-        <div class="caption">Noised Image Step 500</div>
-        <img src="media/noised_t_750.png" alt="noised_t_750">
-        <div class="caption">Noised Image Step 750</div>
+        <figure>
+            <img src="media/noised_t_250.png" alt="noised_t_250">
+            <figcaption>Noised Image Step 250</figcaption>
+        </figure>
+        <figure>
+            <img src="media/noised_t_500.png" alt="noised_t_500">
+            <figcaption>Noised Image Step 500</figcaption>
+        </figure>
+        <figure>
+            <img src="media/noised_t_750.png" alt="noised_t_750">
+            <figcaption>Noised Image Step 750</figcaption>
+        </figure>
     </div>
 
     <div class="image-group">
-        <img src="media/guassian_t_250.png" alt="gaussian_t_250">
-        <div class="caption">Gaussian Denoised Step 250</div>
-        <img src="media/guassian_t_500.png" alt="gaussian_t_500">
-        <div class="caption">Gaussian Denoised Step 500</div>
-        <img src="media/guassian_t_750.png" alt="gaussian_t_750">
-        <div class="caption">Gaussian Denoised Step 750</div>
+        <figure>
+            <img src="media/guassian_t_250.png" alt="gaussian_t_250">
+            <figcaption>Gaussian Denoised Step 250</figcaption>
+        </figure>
+        <figure>
+            <img src="media/guassian_t_500.png" alt="gaussian_t_500">
+            <figcaption>Gaussian Denoised Step 500</figcaption>
+        </figure>
+        <figure>
+            <img src="media/guassian_t_750.png" alt="gaussian_t_750">
+            <figcaption>Gaussian Denoised Step 750</figcaption>
+        </figure>
     </div>
 
     <h2>1.3: One Step Denoising</h2>
     <p>Explanation placeholder.</p>
 
     <div class="image-group">
-        <img src="media/campanile_resized.png" alt="campanile_resized">
-        <div class="caption">Original Image</div>
+        <figure>
+            <img src="media/campanile_resized.png" alt="campanile_resized">
+            <figcaption>Original Image</figcaption>
+        </figure>
     </div>
 
     <div class="image-group">
-        <img src="media/noised_t_250.png" alt="noised_t_250">
-        <div class="caption">Noised Step 250</div>
-        <img src="media/noised_t_500.png" alt="noised_t_500">
-        <div class="caption">Noised Step 500</div>
-        <img src="media/noised_t_750.png" alt="noised_t_750">
-        <div class="caption">Noised Step 750</div>
+        <figure>
+            <img src="media/noised_t_250.png" alt="noised_t_250">
+            <figcaption>Noised Step 250</figcaption>
+        </figure>
+        <figure>
+            <img src="media/noised_t_500.png" alt="noised_t_500">
+            <figcaption>Noised Step 500</figcaption>
+        </figure>
+        <figure>
+            <img src="media/noised_t_750.png" alt="noised_t_750">
+            <figcaption>Noised Step 750</figcaption>
+        </figure>
     </div>
 
     <div class="image-group">
-        <img src="media/one_step_250.png" alt="one_step_250">
-        <div class="caption">One Step Denoising at 250</div>
-        <img src="media/one_step_500.png" alt="one_step_500">
-        <div class="caption">One Step Denoising at 500</div>
-        <img src="media/one_step_750.png" alt="one_step_750">
-        <div class="caption">One Step Denoising at 750</div>
+        <figure>
+            <img src="media/one_step_250.png" alt="one_step_250">
+            <figcaption>One Step Denoising at 250</figcaption>
+        </figure>
+        <figure>
+            <img src="media/one_step_500.png" alt="one_step_500">
+            <figcaption>One Step Denoising at 500</figcaption>
+        </figure>
+        <figure>
+            <img src="media/one_step_750.png" alt="one_step_750">
+            <figcaption>One Step Denoising at 750</figcaption>
+        </figure>
     </div>
+
 
 
     <h2>1.4: Iterative Denoising</h2>
