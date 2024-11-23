@@ -31,20 +31,23 @@
     </style>
 </head>
 <body>
+    <h1>Project 5b: Diffusion Models from Scratch</h1>
     <h3>Safaa Mouline</h3>
 
-    <h2>Intro</h2>
-    <p>Text placeholder.</p>
+    <h2>Overview</h2>
+    <p>In this part, I first implement a UNet for one-step denoising. Then, I add time-conditioning and finally class conditioning with CFG. </p>
 
     <h2>1.1: Implementing the UNet</h2>
     <p>Implementing a UNet from scratch! I implemented this using the following UNet architecture and operations. </p>
+
+    
 
     <h2>1.2: Using the UNet to Train a Denoiser</h2>
     <p>We define the loss function to be the L2 loss between the denoied image and the clean image. To create 
     noised images for training, I added gaussian noise of different degrees to MNIST images. </p>
     <div class="image-group">
         <img src="media/figure_3.png" alt="figure_3.png">
-        <div class="caption">Figure 3: Visualization of the UNet Denoiser</div>
+        <div class="caption">Varying Noise in MNIST Digits</div>
     </div>
 
     <h2>1.2.1: Training</h2>
@@ -52,22 +55,22 @@
     5 epochs, with a learning rate of 1e-4. </p>
     <div class="image-group">
         <img src="media/figure_4.png" alt="figure_4.png">
-        <div class="caption">Figure 4: Training Progress</div>
+        <div class="caption">Training Loss</div>
     </div>
     <div class="image-group">
         <img src="media/figure_5.png" alt="figure_5.png">
-        <div class="caption">Figure 5: Training Loss</div>
+        <div class="caption">Results from test set after 1 epoch</div>
     </div>
     <div class="image-group">
         <img src="media/figure_6.png" alt="figure_6.png">
-        <div class="caption">Figure 6: Example Outputs During Training</div>
+        <div class="caption">Results from test set after 5 epochs</div>
     </div>
 
     <h2>1.2.1: Out-of-Distribution Testing</h2>
     <p>Here is how the one-step denoising UNet performs for an image it was not trained on (from the test set) </p>
     <div class="image-group">
         <img src="media/figure_7.png" alt="figure_7.png">
-        <div class="caption">Figure 7: Out-of-Distribution Testing Results</div>
+        <div class="caption">Results with varying noise</div>
     </div>
 
     <h2>2.1: Adding Time Conditioning to UNet</h2>
@@ -81,18 +84,18 @@
     <p>For training, I used a batch size of 128 and trained for 20 epochs. </p>
     <div class="image-group">
         <img src="media/figure_10.png" alt="figure_10.png">
-        <div class="caption">Figure 10: Time-Conditioned Training Progress</div>
+        <div class="caption">Time-Conditioned Training Loss</div>
     </div>
 
     <h2>2.3: Sampling from the UNet</h2>
     <p>Here is the algorithm that was used for sampling: </p>
     <div class="image-group">
         <img src="media/epoch_5.png" alt="epoch_5.png">
-        <div class="caption">Figure 11: Sampling at Epoch 5</div>
+        <div class="caption">Sampling at Epoch 5</div>
     </div>
     <div class="image-group">
         <img src="media/epoch_20.png" alt="epoch_20.png">
-        <div class="caption">Figure 12: Sampling at Epoch 20</div>
+        <div class="caption">Sampling at Epoch 20</div>
     </div>
 
     <h2>2.4: Adding Class-Conditioning to UNet</h2>
@@ -101,7 +104,7 @@
     so that it still doesn't need to have conditioning. Trained for 20 epochs. </p>
     <div class="image-group">
         <img src="media/figure_11.png" alt="figure_11.png">
-        <div class="caption">Figure 13: Class-Conditioned UNet Training</div>
+        <div class="caption">Class-Conditioned UNet Training Loss</div>
     </div>
 
     <h2>2.3: Sampling from the Class-Conditioned UNet</h2>
@@ -109,11 +112,11 @@
     at the following epochs. </p>
     <div class="image-group">
         <img src="media/class_epoch_5.png" alt="class_epoch_5.png">
-        <div class="caption">Figure 14: Class-Conditioned Sampling at Epoch 5</div>
+        <div class="caption">Class-Conditioned Sampling at Epoch 5</div>
     </div>
     <div class="image-group">
         <img src="media/class_epoch_20.png" alt="class_epoch_20.png">
-        <div class="caption">Figure 15: Class-Conditioned Sampling at Epoch 20</div>
+        <div class="caption">Class-Conditioned Sampling at Epoch 20</div>
     </div>
 </body>
 </html>
