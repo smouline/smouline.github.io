@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project 5a: Power of Diffusion Models</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #0054a6; 
+        }
+        .part-title {
+            color: black; 
+            font-size: smaller; 
+        }
+        .image-group {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .image-group img {
+            max-width: 200px;
+            height: auto;
+            margin: 5px;
+        }
+        .caption {
+            text-align: center;
+            font-size: smaller;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h3>Safaa Mouline</h3>
+
+    <h2>Intro</h2>
+    <p>Text placeholder.</p>
+
+    <h2>Part 0: The Setup</h2>
+    <p>Reflect on the quality of the outputs and their relationships to the text prompts...</p>
+
+    <div class="image-group">
+        <img src="media/10_steps_output_0.png" alt="10_steps_output_0">
+        <div class="caption">10 Steps Output 0</div>
+        <img src="media/10_steps_output_1.png" alt="10_steps_output_1">
+        <div class="caption">10 Steps Output 1</div>
+        <img src="media/10_steps_output_2.png" alt="10_steps_output_2">
+        <div class="caption">10 Steps Output 2</div>
+    </div>
+
+    <div class="image-group">
+        <img src="media/20_steps_output_0.png" alt="20_steps_output_0">
+        <div class="caption">20 Steps Output 0</div>
+        <img src="media/20_steps_output_1.png" alt="20_steps_output_1">
+        <div class="caption">20 Steps Output 1</div>
+        <img src="media/20_steps_output_2.png" alt="20_steps_output_2">
+        <div class="caption">20 Steps Output 2</div>
+    </div>
+
+    <div class="image-group">
+        <img src="media/100_steps_output_0.png" alt="100_steps_output_0">
+        <div class="caption">100 Steps Output 0</div>
+        <img src="media/100_steps_output_1.png" alt="100_steps_output_1">
+        <div class="caption">100 Steps Output 1</div>
+        <img src="media/100_steps_output_2.png" alt="100_steps_output_2">
+        <div class="caption">100 Steps Output 2</div>
+    </div>
+
+    <h2>1.1: The Forward Process</h2>
+    <p>Explanation placeholder.</p>
+
+    <div class="image-group">
+        <img src="media/campanile_resized.png" alt="campanile_resized">
+        <div class="caption">Campanile Resized</div>
+        <img src="media/noised_t_250.png" alt="noised_t_250">
+        <div class="caption">Noised at Step 250</div>
+        <img src="media/noised_t_500.png" alt="noised_t_500">
+        <div class="caption">Noised at Step 500</div>
+        <img src="media/noised_t_750.png" alt="noised_t_750">
+        <div class="caption">Noised at Step 750</div>
+    </div>
+
+    <h2>1.2: Classical Denoising</h2>
+    <p>Explanation placeholder.</p>
+
+    <div class="image-group">
+        <img src="media/noised_t_250.png" alt="noised_t_250">
+        <div class="caption">Noised Image Step 250</div>
+        <img src="media/noised_t_500.png" alt="noised_t_500">
+        <div class="caption">Noised Image Step 500</div>
+        <img src="media/noised_t_750.png" alt="noised_t_750">
+        <div class="caption">Noised Image Step 750</div>
+    </div>
+
+    <div class="image-group">
+        <img src="media/guassian_t_250.png" alt="gaussian_t_250">
+        <div class="caption">Gaussian Denoised Step 250</div>
+        <img src="media/guassian_t_500.png" alt="gaussian_t_500">
+        <div class="caption">Gaussian Denoised Step 500</div>
+        <img src="media/guassian_t_750.png" alt="gaussian_t_750">
+        <div class="caption">Gaussian Denoised Step 750</div>
+    </div>
+
+    <h2>1.3: One Step Denoising</h2>
+    <p>Explanation placeholder.</p>
+
+    <div class="image-group">
+        <img src="media/campanile_resized.png" alt="campanile_resized">
+        <div class="caption">Original Image</div>
+    </div>
+
+    <div class="image-group">
+        <img src="media/noised_t_250.png" alt="noised_t_250">
+        <div class="caption">Noised Step 250</div>
+        <img src="media/noised_t_500.png" alt="noised_t_500">
+        <div class="caption">Noised Step 500</div>
+        <img src="media/noised_t_750.png" alt="noised_t_750">
+        <div class="caption">Noised Step 750</div>
+    </div>
+
+    <div class="image-group">
+        <img src="media/one_step_250.png" alt="one_step_250">
+        <div class="caption">One Step Denoising at 250</div>
+        <img src="media/one_step_500.png" alt="one_step_500">
+        <div class="caption">One Step Denoising at 500</div>
+        <img src="media/one_step_750.png" alt="one_step_750">
+        <div class="caption">One Step Denoising at 750</div>
+    </div>
+
+
+    <h2>1.4: Iterative Denoising</h2>
+    <p> Explain placeholder 
+    </p>  
+
+
+    <img src="media/iterative_at_90.png" width="300", height= "200" alt= "iterative_at_90.png">
+    <img src="media/iterative_at_240.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/iterative_at_390.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/iterative_at_540.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/iterative_at_690.png" width="300", height= "200" alt= "campanile_resized.png">
+
+
+    <img src="media/campanile_resized.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/iterative_denoised.png" width="300", height= "200" alt= "one_step_250.png">
+    <img src="media/one_step_compare.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/gaussian_compare.png" width="300", height= "200" alt= "gaussian_compare.png">
+
+    <h2>1.5: Diffusion Model Sampling</h2>
+    <p> Explain placeholder 
+    </p>  
+
+
+    <img src="media/sample_0.png" width="300", height= "200" alt= "sample_0.png">
+    <img src="media/sample_1.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sample_2.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sample_3.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sample_4.png" width="300", height= "200" alt= "campanile_resized.png">
+
+    <h2>1.6: Classifier Free Guidance (CFG)</h2>
+    <p> Explain placeholder 
+    </p>  
+
+    <img src="media/cfg_sample_0.png" width="300", height= "200" alt= "cfg_sample_0.png">
+    <img src="media/cfg_sample_1.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/cfg_sample_2.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/cfg_sample_3.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/cfg_sample_4.png" width="300", height= "200" alt= "campanile_resized.png">
+
+    <h2>1.7: Image-to-image translation</h2>
+    <p> Explain placeholder 
+    </p>  
+
+    <img src="media/im_to_im_1.png" width="300", height= "200" alt= "image to image">
+    <img src="media/im_to_im_3.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/im_to_im_5.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/im_to_im_7.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/im_to_im_10.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/im_to_im_20.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/campanile_resized.png" width="300", height= "200" alt= "campanile_resized.png">
+
+    <img src="media/sather_1.png" width="300", height= "200" alt= "image to image">
+    <img src="media/sather_3.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sather_5.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sather_7.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sather_10.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sather_20.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sather_gate_resized.png" width="300", height= "200" alt= "campanile_resized.png">
+
+    <img src="media/doe_1.png" width="300", height= "200" alt= "image to image">
+    <img src="media/doe_3.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/doe_5.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/doe_7.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/doe_10.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/doe_20.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/doe_resized.png" width="300", height= "200" alt= "doe_resized.png">
+
+
+    <h2>1.7.1: Editing hand-drawn and web images</h2>
+    <p> Explain placeholder 
+    </p>  
+
+    <img src="media/mona_1.png" width="300", height= "200" alt= "image to image">
+    <img src="media/mona_3.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/mona_5.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/mona_7.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/mona_10.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/mona_20.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/mona_resized.png" width="300", height= "200" alt= "mona_resized.png">
+
+    <img src="media/flower_1.png" width="300", height= "200" alt= "image to image">
+    <img src="media/flower_3.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/flower_5.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/flower_7.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/flower_10.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/flower_20.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/flower_drawn.png" width="300", height= "200" alt= "mona_resized.png">
+
+
+    <img src="media/snowflake_1.png" width="300", height= "200" alt= "image to image">
+    <img src="media/snowflake_3.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/snowflake_5.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/snowflake_7.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/snowflake_10.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/snowflake_20.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/snowflake_drawn.png" width="300", height= "200" alt= "mona_resized.png">
+
+    <h2>1.7.2: Inpainting</h2>
+    <p> Explain placeholder 
+    </p>  
+
+
+    <img src="media/campanile_resized.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/campanile_mask.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/campanile_replace.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/campanile_inpainted.png" width="300", height= "200" alt= "campanile_resized.png">
+
+
+    <img src="media/sather_gate_resized.png" width="300", height= "200" alt= "sather_gate_resized.png">
+    <img src="media/sather_mask.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sather_replace.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sather_inpainted.png" width="300", height= "200" alt= "campanile_resized.png">
+
+
+
+    <img src="media/doe_resized.png" width="300", height= "200" alt= "doe_resized.png">
+    <img src="media/doe_mask.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/doe_replace.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/doe_inpainted.png" width="300", height= "200" alt= "campanile_resized.png">
+
+    <h2>1.7.3: Text-conditional image-to-image translation</h2>
+    <p> Explain placeholder 
+    </p>  
+
+
+    <img src="media/im_to_im_1.png" width="300", height= "200" alt= "image to image">
+    <img src="media/im_to_im_3.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/im_to_im_5.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/im_to_im_7.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/im_to_im_10.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/im_to_im_20.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/campanile_resized.png" width="300", height= "200" alt= "campanile_resized.png">
+
+
+    <img src="media/sather_1.png" width="300", height= "200" alt= "image to image">
+    <img src="media/sather_3.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sather_5.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sather_7.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sather_10.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sather_20.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/sather_gate_resized.png" width="300", height= "200" alt= "campanile_resized.png">
+
+
+    <img src="media/doe_1.png" width="300", height= "200" alt= "image to image">
+    <img src="media/doe_3.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/doe_5.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/doe_7.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/doe_10.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/doe_20.png" width="300", height= "200" alt= "campanile_resized.png">
+    <img src="media/doe_resized.png" width="300", height= "200" alt= "doe_resized.png">
+
+
+    <h2>1.8: Visual Anagrams</h2>
+    <p> Explain placeholder 
+    </p>  
+
+
+    <img src="media/final_illusion.png" width="300", height= "200" alt= "final_illusion.png">
+    <img src="media/flipped.png" width="300", height= "200" alt= "flipped">
+
+
+    <img src="media/snowy_old_man_1.png" width="300", height= "200" alt= "final_illusion.png">
+    <img src="media/flipped.png" width="300", height= "200" alt= "flipped">
+
+
+    <img src="media/snow_coast.png" width="300", height= "200" alt= "final_illusion.png">
+    <img src="media/flipped.png" width="300", height= "200" alt= "flipped">
+
+    <h2>1.9: Hybrid Images</h2>
+    <p> Explain placeholder 
+    </p>  
+
+
+    <img src="media/waterfall_skull.png" width="300", height= "200" alt= "final_illusion.png">
+    <img src="media/snowy_skull.png" width="300", height= "200" alt= "final_illusion.png">
+    <img src="media/snowy_coast_hybrid.png" width="300", height= "200" alt= "final_illusion.png">
+
+  
+</body>
+</html>
