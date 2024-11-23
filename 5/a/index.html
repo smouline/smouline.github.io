@@ -555,8 +555,7 @@ by and for the doe photo, it added a chandlier, both of which are pretty realist
 
 <h2>1.7.3: Text-conditional image-to-image translation</h2>
 <p>Earlier, the image-to-image translation was just projecting to the natural image manifold. Here, we guide it with more specific prompts.
-The prompts are "a rocket ship", "an oil painting of a snowy mountain village", and "a lithograph of waterfalls". Sather gate as a 
-in a snowy village is my personal favorite (i_start = 20). </p>
+The prompts are "a rocket ship", "an oil painting of a snowy mountain village", and "a lithograph of waterfalls". Sather gate in a snowy village is my personal favorite (i_start = 20). </p>
 
 <div class="image-group">
     <figure>
@@ -654,7 +653,9 @@ in a snowy village is my personal favorite (i_start = 20). </p>
 
 <h2>1.8: Visual Anagrams</h2>
 <p>If you get noise a estimate from the diffusion model for one prompt (epsilon_1), flip the current image and take another noise estimate with a different 
-second prompt (epsilon_2) and flip it, you can average these two to be the noise estimate for a visual anagram. This makes a lot more sense when looking
+second prompt (epsilon_2) and flip it, you can average these two to be the noise estimate for a visual anagram (i.e. an image that looks like one thing in one 
+    orientation and another when flipped). 
+    This makes a lot more sense when looking
 at the examples below. </p>
 
 <div class="image-group">
