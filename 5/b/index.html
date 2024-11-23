@@ -42,6 +42,11 @@
     <h2>1.1: Implementing the UNet</h2>
     <p>Implementing a UNet from scratch! I implemented this using the following UNet architecture and operations. </p>
 
+    <div class="image-group">
+        <img src="media/unet.png" alt="figure_3.png">
+        <img src="media/blocks.png" alt="figure_3.png">
+    </div>
+
     
 
     <h2>1.2: Using the UNet to Train a Denoiser</h2>
@@ -81,8 +86,16 @@
     the predicted noise at a time step and the actual noise. Architecure wise, we need to add a FullyConnectedBlock 
     to add the timestep into the model. </p>
 
+    <div class="image-group">
+        <img src="media/timeunet.png" alt="figure_7.png">
+    </div>
+
     <h2>2.2: Training the UNet</h2>
     <p>Here is the algorithm that was used for training: </p>
+    <div class="image-group">
+        <img src="media/alg1.png" alt="figure_7.png">
+    </div>
+    
     <p>For training, I used a batch size of 128 and trained for 20 epochs. </p>
     <div class="image-group">
         <img src="media/figure_10.png" alt="figure_10.png">
@@ -91,6 +104,10 @@
 
     <h2>2.3: Sampling from the UNet</h2>
     <p>Here is the algorithm that was used for sampling: </p>
+    <div class="image-group">
+        <img src="media/alg2.png" alt="figure_7.png">
+    </div>
+    
     <div class="image-group">
         <img src="media/epoch_5.png" alt="epoch_5.png">
         <div class="caption">Sampling at Epoch 5</div>
@@ -103,7 +120,11 @@
     <h2>2.4: Adding Class-Conditioning to UNet</h2>
     <p>But wait! What if I wanted to guide the model to generate specific digits (similar to prompt embeddings for part A)? 
     To do this, we one-hot encoded a class-conditioning vector, c to represent the different 10 classes (digits). We use a dropout of 10% for the conditioning 
-    so that it still doesn't need to have conditioning. Trained for 20 epochs. </p>
+    so that it still doesn't need to have conditioning. Trained for 20 epochs. Here is the algorithm for training: </p>
+
+    <div class="image-group">
+        <img src="media/alg3.png" alt="figure_7.png">
+    </div>
     <div class="image-group">
         <img src="media/figure_11.png" alt="figure_11.png">
         <div class="caption">Class-Conditioned UNet Training Loss</div>
@@ -111,7 +132,10 @@
 
     <h2>2.3: Sampling from the Class-Conditioned UNet</h2>
     <p>Here, we implement CFG, using unconditioned and conditioned passes through the model. Gamma was set to 5.0 and here is the sampling
-    at the following epochs. </p>
+    at the following epochs. Here is the algorithm for sampling: </p>
+    <div class="image-group">
+        <img src="media/alg4.png" alt="figure_7.png">
+    </div>
     <div class="image-group">
         <img src="media/class_epoch_5.png" alt="class_epoch_5.png">
         <div class="caption">Class-Conditioned Sampling at Epoch 5</div>
