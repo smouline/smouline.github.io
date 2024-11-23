@@ -37,17 +37,19 @@
     <p>Text placeholder.</p>
 
     <h2>1.1: Implementing the UNet</h2>
-    <p>Explain </p>
+    <p>Implementing a UNet from scratch! I implemented this using the following UNet architecture and operations. </p>
 
     <h2>1.2: Using the UNet to Train a Denoiser</h2>
-    <p>Explain </p>
+    <p>We define the loss function to be the L2 loss between the denoied image and the clean image. To create 
+    noised images for training, I added gaussian noise of different degrees to MNIST images. </p>
     <div class="image-group">
         <img src="media/figure_3.png" alt="figure_3.png">
         <div class="caption">Figure 3: Visualization of the UNet Denoiser</div>
     </div>
 
     <h2>1.2.1: Training</h2>
-    <p>Explain </p>
+    <p>The following shows the one-step denoising training for noise at the level sigma = 0.5. The batch size was 256, run for 
+    5 epochs, with a learning rate of 1e-4. </p>
     <div class="image-group">
         <img src="media/figure_4.png" alt="figure_4.png">
         <div class="caption">Figure 4: Training Progress</div>
@@ -62,24 +64,28 @@
     </div>
 
     <h2>1.2.1: Out-of-Distribution Testing</h2>
-    <p>Explain </p>
+    <p>Here is how the one-step denoising UNet performs for an image it was not trained on (from the test set) </p>
     <div class="image-group">
         <img src="media/figure_7.png" alt="figure_7.png">
         <div class="caption">Figure 7: Out-of-Distribution Testing Results</div>
     </div>
 
     <h2>2.1: Adding Time Conditioning to UNet</h2>
-    <p>Explain </p>
+    <p>Instead of just predicting the clean image all at once (which we saw even in Part A was not that great), we can 
+    instead predict the noise at each step. To do this, we'll change the objective function to be the L2 loss between 
+    the predicted noise at a time step and the actual noise. Architecure wise, we need to add a FullyConnectedBlock 
+    to add the timestep into the model. </p>
 
     <h2>2.2: Training the UNet</h2>
-    <p>Explain </p>
+    <p>Here is the algorithm that was used for training: </p>
+    <p>For training, I used a batch size of 128 and trained for 20 epochs. </p>
     <div class="image-group">
         <img src="media/figure_10.png" alt="figure_10.png">
         <div class="caption">Figure 10: Time-Conditioned Training Progress</div>
     </div>
 
     <h2>2.3: Sampling from the UNet</h2>
-    <p>Explain </p>
+    <p>Here is the algorithm that was used for sampling: </p>
     <div class="image-group">
         <img src="media/epoch_5.png" alt="epoch_5.png">
         <div class="caption">Figure 11: Sampling at Epoch 5</div>
@@ -90,14 +96,17 @@
     </div>
 
     <h2>2.4: Adding Class-Conditioning to UNet</h2>
-    <p>Explain </p>
+    <p>But wait! What if I wanted to guide the model to generate specific digits (similar to prompt embeddings for part A)? 
+    To do this, we one-hot encoded a class-conditioning vector, c to represent the different 10 classes (digits). We use a dropout of 10% for the conditioning 
+    so that it still doesn't need to have conditioning. Trained for 20 epochs. </p>
     <div class="image-group">
         <img src="media/figure_11.png" alt="figure_11.png">
         <div class="caption">Figure 13: Class-Conditioned UNet Training</div>
     </div>
 
     <h2>2.3: Sampling from the Class-Conditioned UNet</h2>
-    <p>Explain </p>
+    <p>Here, we implement CFG, using unconditioned and conditioned passes through the model. Gamma was set to 5.0 and here is the sampling
+    at the following epochs. </p>
     <div class="image-group">
         <img src="media/class_epoch_5.png" alt="class_epoch_5.png">
         <div class="caption">Figure 14: Class-Conditioned Sampling at Epoch 5</div>
