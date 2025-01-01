@@ -47,16 +47,21 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             width: 300px;
             text-align: center;
-        }
-        .project-card a {
-            display: block;
-            margin-top: 10px;
-            color: #0054a6;
             text-decoration: none;
-            font-weight: bold;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .project-card a:hover {
-            text-decoration: underline;
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .project-card h2 {
+            color: #0054a6;
+        }
+        .project-card p {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -67,30 +72,30 @@
     
     <main>
         <div class="projects">
-            <div class="project-card" id="project1">
+            <a class="project-card" href="./1/index.html" id="project1">
                 <h2>Project 1</h2>
-                <a href="./1/index.html">View Project</a>
-            </div>
-            <div class="project-card" id="project2">
+                <p>Alignment: Colorizing the Prokudin-Gorskii Photo Collection</p>
+            </a>
+            <a class="project-card" href="./2/index.html" id="project2">
                 <h2>Project 2</h2>
-                <a href="./2/index.html">View Project</a>
-            </div>
-            <div class="project-card" id="project3">
+                <p>Fun with Filters and Frequencies</p>
+            </a>
+            <a class="project-card" href="./3/index.html" id="project3">
                 <h2>Project 3</h2>
-                <a href="./3/index.html">View Project</a>
-            </div>
-            <div class="project-card" id="project4">
+                <p>Face Morphing</p>
+            </a>
+            <a class="project-card" href="./4/index.html" id="project4">
                 <h2>Project 4</h2>
-                <a href="./4/index.html">View Project</a>
-            </div>
-            <div class="project-card" id="project5">
+                <p>(Auto)stitching and Photo Mosaics</p>
+            </a>
+            <a class="project-card" href="./5/index.html" id="project5">
                 <h2>Project 5</h2>
-                <a href="./5/index.html">View Project</a>
-            </div>
-            <div class="project-card" id="final">
-                <h2>Final Project</h2>
-                <a href="https://danielafajardol.github.io/finalprojects.html">View Final Projects</a>
-            </div>
+                <p>Visual Anagrams and Diffusion Models from Scratch</p>
+            </a>
+            <a class="project-card" href="https://danielafajardol.github.io/finalprojects.html" id="final">
+                <h2>Final Projects</h2>
+                <p>Facial Recognition with NNs and Synthetisizing Novel Views with Neural Radiance Fields</p>
+            </a>
         </div>
     </main>
 </body>
